@@ -41,5 +41,15 @@ module Starlight
       g.test_framework      :rspec
       g.fixture_replacement :factory_bot, dir: 'spec/factories'
     end
+
+    # Include indexes in error keys for nested attributes
+    config.active_record.index_nested_attribute_errors = true
+
+    # Allow error messages for nested attributes with indices to be translated
+    config.active_model.i18n_customize_full_message = true
+
+    # Prepare a configuration object for Argon2 options
+    # (these are assigned by the various environment config files)
+    config.argon2 = ActiveSupport::OrderedOptions.new
   end
 end
