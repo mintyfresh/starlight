@@ -4,7 +4,10 @@ FactoryBot.define do
   factory :sign_in do
     email { user.email }
     password { user.credentials.first.password }
-    ip { Faker::Internet.ip_v4_address }
+
+    after(:build) do |sign_in|
+      sign_in.ip ||= Faker::Internet.ip_v4_address
+    end
 
     transient do
       user { create(:user, :with_password) }
