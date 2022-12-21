@@ -9,5 +9,13 @@ module Types
 
     field :topic, TopicType, null: false
     field :author, UserType, null: false
+
+    def topic
+      dataloader.with(Sources::Record, ::Topic).load(object.topic_id)
+    end
+
+    def author
+      dataloader.with(Sources::Record, ::User).load(object.author_id)
+    end
   end
 end

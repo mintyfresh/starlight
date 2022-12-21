@@ -33,7 +33,7 @@ module Resolvers
     delegate :model_class, to: :class, private: true
 
     def resolve(id:)
-      model_class.find_by(id:)
+      dataloader.with(Sources::Record, model_class).load(id)
     end
   end
 end
