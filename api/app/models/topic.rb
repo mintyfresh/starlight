@@ -14,7 +14,7 @@
 #  updated_at    :datetime         not null
 #  deleted_at    :datetime
 #  deleted_in    :uuid
-#  deleted_by_id :bigint           not null
+#  deleted_by_id :bigint
 #
 # Indexes
 #
@@ -26,7 +26,7 @@
 # Foreign Keys
 #
 #  fk_rails_...  (author_id => users.id)
-#  fk_rails_...  (deleted_by_id => users.id)
+#  fk_rails_...  (deleted_by_id => users.id) ON DELETE => nullify
 #  fk_rails_...  (section_id => sections.id)
 #
 class Topic < ApplicationRecord
@@ -34,6 +34,8 @@ class Topic < ApplicationRecord
 
   belongs_to :section, inverse_of: :topics
   belongs_to :author, class_name: 'User', inverse_of: :authored_topics
+
+  has_many :posts, inverse_of: :topic, dependent: :destroy
 
   validates :title, presence: true, length: { maximum: 100 }
 end

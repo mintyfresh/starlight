@@ -14,7 +14,7 @@
 #  updated_at    :datetime         not null
 #  deleted_at    :datetime
 #  deleted_in    :uuid
-#  deleted_by_id :bigint           not null
+#  deleted_by_id :bigint
 #
 # Indexes
 #
@@ -26,7 +26,7 @@
 # Foreign Keys
 #
 #  fk_rails_...  (author_id => users.id)
-#  fk_rails_...  (deleted_by_id => users.id)
+#  fk_rails_...  (deleted_by_id => users.id) ON DELETE => nullify
 #  fk_rails_...  (section_id => sections.id)
 #
 require 'rails_helper'

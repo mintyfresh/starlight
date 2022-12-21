@@ -8,6 +8,7 @@
 #  email_ciphertext :binary           not null
 #  email_bidx       :binary           not null
 #  display_name     :citext           not null
+#  posts_count      :integer          default(0), not null
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #

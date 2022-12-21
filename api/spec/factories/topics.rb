@@ -14,7 +14,7 @@
 #  updated_at    :datetime         not null
 #  deleted_at    :datetime
 #  deleted_in    :uuid
-#  deleted_by_id :bigint           not null
+#  deleted_by_id :bigint
 #
 # Indexes
 #
@@ -26,7 +26,7 @@
 # Foreign Keys
 #
 #  fk_rails_...  (author_id => users.id)
-#  fk_rails_...  (deleted_by_id => users.id)
+#  fk_rails_...  (deleted_by_id => users.id) ON DELETE => nullify
 #  fk_rails_...  (section_id => sections.id)
 #
 FactoryBot.define do
@@ -35,6 +35,20 @@ FactoryBot.define do
     association :author, factory: :user
 
     title { Faker::Book.title }
+
+    after(:build) do |topic|
+      topic.posts << build(:post, topic:, author: topic.author)
+    end
+
+    trait :with_replies do
+      transient do
+        replies_count { 3 }
+      end
+
+      after(:build) do |topic, e|
+        topic.posts += build_list(:post, e.replies_count, topic:)
+      end
+    end
 
     trait :deleted do
       deleted_at { Time.current }

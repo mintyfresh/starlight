@@ -56,7 +56,7 @@ module SoftDeletable
 
   # @return [Boolean]
   def restore
-    update(deleted_at: nil, deleted_in: nil, deleted_by: nil)
+    update(deleted_at: nil)
   end
 
   # @param deleted_in [String, nil]
@@ -68,7 +68,7 @@ module SoftDeletable
 
   # @return [Boolean]
   def restore!
-    update!(deleted_at: nil, deleted_in: nil, deleted_by: nil)
+    update!(deleted_at: nil)
   end
 
   # @param deleted_in [String, nil]
@@ -80,7 +80,7 @@ module SoftDeletable
 
   # @return [Boolean]
   def undelete
-    update_columns(deleted_at: nil, deleted_in: nil, deleted_by_id: nil) # rubocop:disable Rails/SkipsModelValidations
+    update_columns(deleted_at: nil) # rubocop:disable Rails/SkipsModelValidations
   end
 
   # @return [Boolean]
@@ -96,10 +96,9 @@ module SoftDeletable
     if ActiveRecord::Type::Boolean.new.cast(value)
       self.deleted_at = Time.current
       self.deleted_in = self.class.generate_deleted_in
+      self.deleted_by = nil unless deleted_by_id_changed?
     else
       self.deleted_at = nil
-      self.deleted_in = nil
-      self.deleted_by = nil
     end
   end
 

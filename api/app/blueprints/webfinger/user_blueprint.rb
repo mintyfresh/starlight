@@ -12,7 +12,7 @@ module Webfinger
     field :properties do |user, _|
       {
         NAME_URI    => user.display_name,
-        POSTS_COUNT => 0
+        POSTS_COUNT => user.posts_count
       }
     end
   end

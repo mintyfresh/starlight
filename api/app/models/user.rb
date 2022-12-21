@@ -8,6 +8,7 @@
 #  email_ciphertext :binary           not null
 #  email_bidx       :binary           not null
 #  display_name     :citext           not null
+#  posts_count      :integer          default(0), not null
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #
@@ -28,8 +29,10 @@ class User < ApplicationRecord
 
   has_many :credentials, class_name: 'UserCredential', dependent: :destroy, inverse_of: :user
 
-  has_many :authored_topics, class_name: 'Topic', foreign_key: :author_id,
-                             inverse_of: :author, dependent: :restrict_with_error
+  with_options inverse_of: :author, foreign_key: :author_id do
+    has_many :authored_topics, class_name: 'Topic', dependent: :restrict_with_error
+    has_many :authored_posts, class_name: 'Post', dependent: :restrict_with_error
+  end
 
   validates :email, email: true, presence: true
   validates :display_name, format: { with: DISPLAY_NAME_FORMAT }, length: { maximum: DISPLAY_NAME_MAX_LENGTH }
