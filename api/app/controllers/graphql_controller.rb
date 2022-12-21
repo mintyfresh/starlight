@@ -24,10 +24,11 @@ private
 
   # @return [Hash]
   def build_context
-    { ip:         request.ip,
-      remote_ip:  request.remote_ip,
-      request_id: request.uuid,
-      user_agent: request.user_agent }
+    { ip:              request.ip,
+      remote_ip:       request.remote_ip,
+      request_id:      request.uuid,
+      user_agent:      request.user_agent,
+      current_session: }
   end
 
   # Handle variables in form data, JSON body, or a blank value
