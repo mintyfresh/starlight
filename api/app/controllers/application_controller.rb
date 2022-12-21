@@ -3,6 +3,11 @@
 class ApplicationController < ActionController::API
   AUTHENTICATION_SCHEME = 'Starlight'
 
+  # Keep updated information for the user about where their account is being accessed from
+  before_action if: :current_session do
+    current_session.update(current_ip: request.ip)
+  end
+
   # @return [UserSession, nil] the current user session, if authenticated
   def current_session
     return @current_session if defined?(@current_session)
