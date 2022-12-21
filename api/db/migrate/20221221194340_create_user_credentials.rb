@@ -6,7 +6,7 @@ class CreateUserCredentials < ActiveRecord::Migration[7.0]
       t.string     :type, null: false
       t.belongs_to :user, null: false, foreign_key: true
       t.string     :external_id
-      t.jsonb      :data
+      t.jsonb      :secret_data
       t.timestamp  :expires_at
       t.timestamps
 

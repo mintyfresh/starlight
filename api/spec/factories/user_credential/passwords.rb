@@ -23,22 +23,9 @@
 #
 #  fk_rails_...  (user_id => users.id)
 #
-require 'rails_helper'
-
-RSpec.describe UserCredential do
-  subject(:user_credential) { build(:user_credential) }
-
-  it 'has a valid factory' do
-    expect(user_credential).to be_valid
-  end
-
-  it 'is invalid without a type' do
-    user_credential.type = nil
-    expect { user_credential.validate }.to raise_error(ActiveModel::StrictValidationFailed)
-  end
-
-  it 'is invalid without a user' do
-    user_credential.user = nil
-    expect(user_credential).to be_invalid
+FactoryBot.define do
+  factory :user_password_credential, class: 'UserCredential::Password', parent: :user_credential do
+    type { UserCredential::Password.sti_name }
+    password { Faker::Internet.password }
   end
 end

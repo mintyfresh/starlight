@@ -30,4 +30,11 @@ class User < ApplicationRecord
 
   validates :email, email: true, presence: true
   validates :display_name, format: { with: DISPLAY_NAME_FORMAT }, length: { maximum: DISPLAY_NAME_MAX_LENGTH }
+
+  # @param type [Class<UserCredential>] the type of credential to authenticate with
+  # @param credential [String] the user input credential
+  # @return [self, nil] the authenticated user, or nil if the credential is invalid
+  def authenticate(type, credential)
+    credentials.find_by(type: type.sti_name)&.authenticate(credential)
+  end
 end

@@ -20,5 +20,15 @@ FactoryBot.define do
   factory :user do
     email { Faker::Internet.email(name: display_name) }
     sequence(:display_name) { |n| "#{Faker::Internet.user_name} #{n}" }
+
+    trait :with_password do
+      transient do
+        password { Faker::Internet.password }
+      end
+
+      after(:build) do |user, e|
+        user.credentials << build(:user_password_credential, user:, password: e.password)
+      end
+    end
   end
 end

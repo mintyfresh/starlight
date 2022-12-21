@@ -8,7 +8,7 @@
 #  type        :string           not null
 #  user_id     :bigint           not null
 #  external_id :string
-#  data        :jsonb
+#  secret_data :jsonb
 #  expires_at  :datetime
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
@@ -34,7 +34,7 @@ class UserCredential < ApplicationRecord
   # @abstract
   # @param credential [String]
   # @return [User, nil] the user associated with the credential, or nil if the credential is invalid
-  def authenticate?(_)
+  def authenticate(_)
     raise NotImplementedError, "#{self.class.name}#authenticate? is not implemented"
   end
 end

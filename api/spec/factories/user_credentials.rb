@@ -8,7 +8,7 @@
 #  type        :string           not null
 #  user_id     :bigint           not null
 #  external_id :string
-#  data        :jsonb
+#  secret_data :jsonb
 #  expires_at  :datetime
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null

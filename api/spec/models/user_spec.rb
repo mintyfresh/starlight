@@ -61,4 +61,24 @@ RSpec.describe User do
     user.display_name = 'a' * 31
     expect(user).to be_invalid
   end
+
+  describe '#authenticate' do
+    context 'when the user has a password credential' do
+      let(:user) { create(:user, :with_password, password:) }
+      let(:password) { Faker::Internet.password }
+
+      it 'returns the user when the password is correct' do
+        expect(user.authenticate(UserCredential::Password, password)).to eq(user)
+      end
+
+      it 'returns nil when the password is incorrect' do
+        expect(user.authenticate(UserCredential::Password, 'wrong_password')).to be_nil
+      end
+
+      it 'returns nil when the user does not have a password credential' do
+        user.credentials.destroy_all
+        expect(user.authenticate(UserCredential::Password, password)).to be_nil
+      end
+    end
+  end
 end
