@@ -30,6 +30,7 @@
 #  fk_rails_...  (section_id => sections.id)
 #
 class Topic < ApplicationRecord
+  include Sluggable
   include SoftDeletable
 
   belongs_to :section, inverse_of: :topics
@@ -38,4 +39,6 @@ class Topic < ApplicationRecord
   has_many :posts, inverse_of: :topic, dependent: :destroy
 
   validates :title, presence: true, length: { maximum: 100 }
+
+  sluggify :title, :id
 end
