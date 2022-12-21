@@ -28,6 +28,9 @@ class User < ApplicationRecord
 
   has_many :credentials, class_name: 'UserCredential', dependent: :destroy, inverse_of: :user
 
+  has_many :authored_topics, class_name: 'Topic', foreign_key: :author_id,
+                             inverse_of: :author, dependent: :restrict_with_error
+
   validates :email, email: true, presence: true
   validates :display_name, format: { with: DISPLAY_NAME_FORMAT }, length: { maximum: DISPLAY_NAME_MAX_LENGTH }
 

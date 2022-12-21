@@ -12,6 +12,8 @@
 #  updated_at  :datetime         not null
 #
 class Section < ApplicationRecord
+  has_many :topics, dependent: :restrict_with_error, inverse_of: :section
+
   validates :title, presence: true, length: { maximum: 100 }
   validates :description, length: { maximum: 2500 }
 

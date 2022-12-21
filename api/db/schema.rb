@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_12_21_202924) do
+ActiveRecord::Schema[7.0].define(version: 2022_12_21_203304) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "plpgsql"
@@ -21,6 +21,23 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_21_202924) do
     t.integer "position", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "topics", force: :cascade do |t|
+    t.bigint "section_id", null: false
+    t.bigint "author_id", null: false
+    t.string "title", null: false
+    t.integer "posts_count", default: 0, null: false
+    t.integer "views_count", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "deleted_at", precision: nil
+    t.uuid "deleted_in"
+    t.bigint "deleted_by_id", null: false
+    t.index ["author_id"], name: "index_topics_on_author_id"
+    t.index ["deleted_by_id"], name: "index_topics_on_deleted_by_id"
+    t.index ["deleted_in"], name: "index_topics_on_deleted_in"
+    t.index ["section_id"], name: "index_topics_on_section_id"
   end
 
   create_table "user_credentials", force: :cascade do |t|
@@ -46,5 +63,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_21_202924) do
     t.index ["email_bidx"], name: "index_users_on_email_bidx", unique: true
   end
 
+  add_foreign_key "topics", "sections"
+  add_foreign_key "topics", "users", column: "author_id"
+  add_foreign_key "topics", "users", column: "deleted_by_id"
   add_foreign_key "user_credentials", "users"
 end
