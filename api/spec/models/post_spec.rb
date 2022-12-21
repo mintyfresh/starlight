@@ -33,5 +33,53 @@
 require 'rails_helper'
 
 RSpec.describe Post do
-  pending "add some examples to (or delete) #{__FILE__}"
+  subject(:post) { build(:post) }
+
+  it 'has a valid factory' do
+    expect(post).to be_valid
+  end
+
+  it 'is invalid without a topic' do
+    post.topic = nil
+    expect(post).to be_invalid
+  end
+
+  it 'is invalid without an author' do
+    post.author = nil
+    expect(post).to be_invalid
+  end
+
+  it 'is invalid without a body' do
+    post.body = nil
+    expect(post).to be_invalid
+  end
+
+  it 'is invalid when the body is too short' do
+    post.body = 'a' * (described_class::BODY_MIN_LENGTH - 1)
+    expect(post).to be_invalid
+  end
+
+  it 'is invalid when the body is too long' do
+    post.body = 'a' * (described_class::BODY_MAX_LENGTH + 1)
+    expect(post).to be_invalid
+  end
+
+  it "increments the topic's posts count when created" do
+    # the topic factory also creates an initial "first post" for the topic
+    expect { post.save! }.to change { post.topic.posts_count }.by(1 + 1)
+  end
+
+  it "increments the author's posts count when created" do
+    expect { post.save! }.to change { post.author.posts_count }.by(1)
+  end
+
+  it "decrements the topic's posts count when soft deleted" do
+    post.save!
+    expect { post.destroy! }.to change { post.topic.posts_count }.by(-1)
+  end
+
+  it "decrements the author's posts count when soft deleted" do
+    post.save!
+    expect { post.destroy! }.to change { post.author.posts_count }.by(-1)
+  end
 end

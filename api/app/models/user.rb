@@ -28,6 +28,7 @@ class User < ApplicationRecord
   has_unique_attribute :display_name
 
   has_many :credentials, class_name: 'UserCredential', dependent: :destroy, inverse_of: :user
+  has_many :sessions, class_name: 'UserSession', dependent: :destroy, inverse_of: :user
 
   with_options inverse_of: :author, foreign_key: :author_id do
     has_many :authored_topics, class_name: 'Topic', dependent: :restrict_with_error

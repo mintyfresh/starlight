@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_12_21_210243) do
+ActiveRecord::Schema[7.0].define(version: 2022_12_21_214711) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "plpgsql"
@@ -70,6 +70,21 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_21_210243) do
     t.index ["user_id"], name: "index_user_credentials_on_user_id"
   end
 
+  create_table "user_sessions", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.binary "creation_ip_ciphertext"
+    t.binary "creation_ip_bidx"
+    t.binary "current_ip_ciphertext"
+    t.binary "current_ip_bidx"
+    t.datetime "expires_at", precision: nil, null: false
+    t.datetime "revoked_at", precision: nil
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["creation_ip_bidx"], name: "index_user_sessions_on_creation_ip_bidx"
+    t.index ["current_ip_bidx"], name: "index_user_sessions_on_current_ip_bidx"
+    t.index ["user_id"], name: "index_user_sessions_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.binary "email_ciphertext", null: false
     t.binary "email_bidx", null: false
@@ -89,4 +104,5 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_21_210243) do
   add_foreign_key "topics", "users", column: "author_id"
   add_foreign_key "topics", "users", column: "deleted_by_id", on_delete: :nullify
   add_foreign_key "user_credentials", "users"
+  add_foreign_key "user_sessions", "users"
 end
