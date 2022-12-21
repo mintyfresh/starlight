@@ -26,6 +26,8 @@ class User < ApplicationRecord
   has_unique_attribute :email, index: 'index_users_on_email_bidx'
   has_unique_attribute :display_name
 
+  has_many :credentials, class_name: 'UserCredential', dependent: :destroy, inverse_of: :user
+
   validates :email, email: true, presence: true
   validates :display_name, format: { with: DISPLAY_NAME_FORMAT }, length: { maximum: DISPLAY_NAME_MAX_LENGTH }
 end

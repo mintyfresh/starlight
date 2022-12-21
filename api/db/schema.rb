@@ -10,10 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_12_21_184721) do
+ActiveRecord::Schema[7.0].define(version: 2022_12_21_194340) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "plpgsql"
+
+  create_table "user_credentials", force: :cascade do |t|
+    t.string "type", null: false
+    t.bigint "user_id", null: false
+    t.string "external_id"
+    t.jsonb "data"
+    t.datetime "expires_at", precision: nil
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["type", "external_id"], name: "index_user_credentials_on_type_and_external_id", unique: true
+    t.index ["type", "user_id"], name: "index_user_credentials_on_type_and_user_id", unique: true
+    t.index ["user_id"], name: "index_user_credentials_on_user_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.binary "email_ciphertext", null: false
@@ -25,4 +38,5 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_21_184721) do
     t.index ["email_bidx"], name: "index_users_on_email_bidx", unique: true
   end
 
+  add_foreign_key "user_credentials", "users"
 end
