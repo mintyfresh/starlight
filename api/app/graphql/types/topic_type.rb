@@ -2,6 +2,8 @@
 
 module Types
   class TopicType < BaseObject
+    authorized_with_policy
+
     field :id, ID, null: false
     field :title, String, null: false
     field :slug, String, null: false
@@ -25,7 +27,7 @@ module Types
     end
 
     def posts
-      policy_scope(object.posts).order(:created_at, :id)
+      object.posts.order(:created_at, :id)
     end
 
     # @return [Post, nil]

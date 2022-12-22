@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Resolvers
-  module Find
+  module List
     class << self
       # @param model_name [String] the name of the ActiveRecord class
       # @param output_type [Class, Module] the GraphQL type to return
@@ -11,10 +11,9 @@ module Resolvers
         output_type: default_output_type(model_name)
       )
         Class.new(BaseResolver) do |resolver|
-          resolver.include(::Resolvers::Find)
-          resolver.description("Find a #{output_type.graphql_name} by an ID")
+          resolver.include(::Resolvers::List)
+          resolver.description("Returns a list of #{output_type.graphql_name} objects")
           resolver.define_singleton_method(:model_class) { @model_class ||= model_name.constantize }
-          resolver.argument(:id, GraphQL::Types::ID, required: true)
           resolver.type(output_type, null: true)
         end
       end
@@ -24,7 +23,7 @@ module Resolvers
       # @param model_name [String]
       # @return [Class, Module]
       def default_output_type(model_name)
-        "Types::#{model_name}Type".constantize
+        "Types::#{model_name}Type".constantize.connection_type
       end
     end
 
@@ -32,8 +31,8 @@ module Resolvers
     #   @return [Class<ActiveRecord::Base>]
     delegate :model_class, to: :class, private: true
 
-    def resolve(id:)
-      dataloader.with(Sources::Record, model_class).load(id)
+    def resolve
+      model_class.all
     end
   end
 end

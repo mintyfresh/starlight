@@ -6,12 +6,16 @@ module Types
     edge_type_class Types::BaseEdge
     field_class Types::BaseField
 
-    def policy(record)
-      Pundit.policy!(context[:current_user], record)
-    end
+    # @param scope_items [Boolean] whether to automatically apply policy scopes
+    # @return [void]
+    def self.authorized_with_policy(scope_items: true)
+      define_singleton_method(:authorized?) do |object, context|
+        super(object, context) && Pundit.policy!(context[:current_session]&.user, object).show?
+      end
 
-    def policy_scope(scope)
-      Pundit.policy_scope!(context[:current_user], scope)
+      scope_items and define_singleton_method(:scope_items) do |items, context|
+        Pundit.policy_scope!(context[:current_session]&.user, items)
+      end
     end
   end
 end

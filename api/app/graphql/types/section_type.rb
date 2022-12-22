@@ -2,6 +2,8 @@
 
 module Types
   class SectionType < BaseObject
+    authorized_with_policy
+
     field :id, ID, null: false
     field :title, String, null: false
     field :slug, String, null: false

@@ -2,6 +2,8 @@
 
 module Types
   class PostType < BaseObject
+    authorized_with_policy
+
     field :id, ID, null: false
     field :body, String, null: false
     field :created_at, GraphQL::Types::ISO8601DateTime, null: false
