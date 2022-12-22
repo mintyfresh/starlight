@@ -13,6 +13,8 @@ module Mutations
       sign_up.ip = context[:ip]
 
       if (session = sign_up.call)
+        context[:current_session] = session
+
         { user: session.user, session: }
       else
         { errors: sign_up.errors }
