@@ -30,7 +30,10 @@ const handler = async (
       })
       .once('proxyRes', resolve)
       .once('error', reject)
-      .web(req, res, { target: process.env.GRAPHQL_API_URL })
+      .web(req, res, {
+        ignorePath: true,
+        target: process.env.GRAPHQL_API_URL
+      })
   })
 }
 
