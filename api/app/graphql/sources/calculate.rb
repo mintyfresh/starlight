@@ -2,32 +2,34 @@
 
 module Sources
   class Calculate < GraphQL::Dataloader::Source
-    def self.batch_key_for(model_class, function, column_name, grouping_key = model_class.primary_key, scope: nil)
-      [model_class, function.to_sym, column_name.to_sym, grouping_key.to_sym, scope.try(:to_sql)]
+    def self.batch_key_for(model_class, function, measure_column_name,
+                           group_column_name = model_class.primary_key, scope: nil)
+      [model_class, function.to_sym, measure_column_name.to_sym, group_column_name.to_sym, scope.try(:to_sql)]
     end
 
     # @param model_class [Class<ActiveRecord::Base>] the model class to load
     # @param function [Symbol] the aggregation function to use for the calculation
-    # @param column_name [Symbol] the name of the column to calculate the maximum for
-    # @param grouping_key [Symbol] the name of the column to group by
+    # @param measure_column_name [Symbol] the name of the column to calculate the maximum for
+    # @param group_column_name [Symbol] the name of the column to group by
     # @param scope [ActiveRecord::Relation, nil] the scope to apply to the query
-    def initialize(model_class, function, column_name, grouping_key = model_class.primary_key, scope: nil)
+    def initialize(model_class, function, measure_column_name, group_column_name = model_class.primary_key, scope: nil)
       super()
-      @model_class  = model_class
-      @function     = function.to_sym
-      @column_name  = column_name.to_sym
-      @grouping_key = grouping_key.to_sym
-      @scope        = scope
+      @model_class         = model_class
+      @function            = function.to_sym
+      @measure_column_name = measure_column_name.to_sym
+      @group_column_name   = group_column_name.to_sym
+      @group_column_type   = model_class.type_for_attribute(group_column_name)
+      @scope               = scope
     end
 
     # @param ids [Array<Integer>] the IDs of the records to calculate the maximum for
     # @return [Array] the maximum values
     def fetch(ids)
-      records = @model_class.where_any(@grouping_key, ids).group(@grouping_key)
+      records = @model_class.where_any(@group_column_name, ids).group(@group_column_name)
       records = records.merge(@scope) if @scope
-      result  = records.calculate(@function, @column_name)
+      result  = records.calculate(@function, @measure_column_name)
 
-      ids.map { |id| result[id] }
+      ids.map { |id| result[@group_column_type.cast(id)] }
     end
   end
 end
