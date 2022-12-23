@@ -253,6 +253,11 @@ export type SignOutMutationVariables = Exact<{ [key: string]: never; }>;
 
 export type SignOutMutation = { __typename?: 'Mutation', signOut?: { __typename?: 'SignOutPayload', success: boolean } | null };
 
+export type SectionsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type SectionsQuery = { __typename?: 'Query', sections?: { __typename?: 'SectionConnection', nodes?: Array<{ __typename?: 'Section', id: string, title: string, slug: string, description?: string | null } | null> | null } | null };
+
 
 export const SignInDocument = gql`
     mutation SignIn($input: SignInInput!) {
@@ -330,6 +335,45 @@ export function useSignOutMutation(baseOptions?: Apollo.MutationHookOptions<Sign
 export type SignOutMutationHookResult = ReturnType<typeof useSignOutMutation>;
 export type SignOutMutationResult = Apollo.MutationResult<SignOutMutation>;
 export type SignOutMutationOptions = Apollo.BaseMutationOptions<SignOutMutation, SignOutMutationVariables>;
+export const SectionsDocument = gql`
+    query Sections {
+  sections {
+    nodes {
+      id
+      title
+      slug
+      description
+    }
+  }
+}
+    `;
+
+/**
+ * __useSectionsQuery__
+ *
+ * To run a query within a React component, call `useSectionsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSectionsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSectionsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useSectionsQuery(baseOptions?: Apollo.QueryHookOptions<SectionsQuery, SectionsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<SectionsQuery, SectionsQueryVariables>(SectionsDocument, options);
+      }
+export function useSectionsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SectionsQuery, SectionsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<SectionsQuery, SectionsQueryVariables>(SectionsDocument, options);
+        }
+export type SectionsQueryHookResult = ReturnType<typeof useSectionsQuery>;
+export type SectionsLazyQueryHookResult = ReturnType<typeof useSectionsLazyQuery>;
+export type SectionsQueryResult = Apollo.QueryResult<SectionsQuery, SectionsQueryVariables>;
 
       export interface PossibleTypesResultData {
         possibleTypes: {

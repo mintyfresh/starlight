@@ -1,8 +1,16 @@
 import type { AppProps } from 'next/app'
 import 'bootstrap/dist/css/bootstrap.min.css'
+import { createBrowserClient } from '../lib/graphql-client'
+import { ApolloProvider } from '@apollo/client'
 
 const App = ({ Component, pageProps }: AppProps) => {
-  return <Component {...pageProps} />
+  const client = createBrowserClient('')
+
+  return (
+    <ApolloProvider client={client}>
+      <Component {...pageProps} />
+    </ApolloProvider>
+  )
 }
 
 export default App
