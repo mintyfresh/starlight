@@ -1,5 +1,5 @@
 import httpProxy from 'http-proxy'
-import { NextApiRequest, NextApiResponse } from 'next'
+import type { NextApiRequest, NextApiResponse } from 'next'
 
 export const config = {
   api: {
