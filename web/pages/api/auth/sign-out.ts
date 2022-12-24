@@ -2,6 +2,7 @@ import { gql } from '@apollo/client'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { createServerSideClient } from '../../../lib/graphql-client'
 import { SignOutMutation } from '../../../lib/generated/graphql'
+import { validateCSRFToken } from '../../../lib/csrf'
 
 const SIGN_OUT_MUTATION = gql`
   mutation SignOut {
@@ -52,4 +53,4 @@ const handler = async (
     .json({ signOut: { success: true } })
 }
 
-export default handler
+export default validateCSRFToken(handler)

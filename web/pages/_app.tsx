@@ -4,7 +4,7 @@ import { createBrowserClient } from '../lib/graphql-client'
 import { ApolloProvider } from '@apollo/client'
 
 const App = ({ Component, pageProps }: AppProps) => {
-  const client = createBrowserClient('')
+  const client = createBrowserClient(pageProps['Starlight-CSRF-Token'])
 
   return (
     <ApolloProvider client={client}>

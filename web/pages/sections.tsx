@@ -1,5 +1,6 @@
 import { gql } from '@apollo/client'
-import type { NextPage } from 'next'
+import type { GetServerSideProps, NextPage } from 'next'
+import { injectCSRFToken } from '../lib/csrf'
 import { useSectionsQuery } from '../lib/generated/graphql'
 
 gql`
@@ -14,6 +15,8 @@ gql`
     }
   }
 `
+
+export const getServerSideProps: GetServerSideProps = injectCSRFToken()
 
 const SectionsPage: NextPage = () => {
   const { data, loading } = useSectionsQuery()

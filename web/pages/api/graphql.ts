@@ -1,5 +1,6 @@
 import httpProxy from 'http-proxy'
 import type { NextApiRequest, NextApiResponse } from 'next'
+import { validateCSRFToken } from '../../lib/csrf'
 
 export const config = {
   api: {
@@ -37,4 +38,4 @@ const handler = async (
   })
 }
 
-export default handler
+export default validateCSRFToken(handler)

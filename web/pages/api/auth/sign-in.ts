@@ -1,7 +1,8 @@
 import { gql } from '@apollo/client'
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { createServerSideClient } from '../../../lib/graphql-client'
+import { validateCSRFToken } from '../../../lib/csrf'
 import { SignInMutation } from '../../../lib/generated/graphql'
+import { createServerSideClient } from '../../../lib/graphql-client'
 
 const SIGN_IN_MUTATION = gql`
   mutation SignIn($input: SignInInput!) {
@@ -73,4 +74,4 @@ const handler = async (
     .json({ signIn: { user: data.signIn.user } })
 }
 
-export default handler
+export default validateCSRFToken(handler)

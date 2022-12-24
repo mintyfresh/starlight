@@ -1,9 +1,12 @@
-import type { NextPage } from 'next'
+import type { GetServerSideProps, NextPage } from 'next'
 import { useState } from 'react'
 import { Button, ButtonToolbar, Form } from 'react-bootstrap'
+import { CSRFTokenProp, injectCSRFToken } from '../lib/csrf'
 import type { SignInMutation } from '../lib/generated/graphql'
 
-const SignIn: NextPage = () => {
+export const getServerSideProps: GetServerSideProps = injectCSRFToken()
+
+const SignIn: NextPage<CSRFTokenProp> = (props) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
@@ -15,7 +18,8 @@ const SignIn: NextPage = () => {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Starlight-CSRF-Token': props['Starlight-CSRF-Token']
         },
         body: JSON.stringify({ email, password })
       })
