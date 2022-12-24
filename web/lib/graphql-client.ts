@@ -1,5 +1,6 @@
 import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client'
 import { setContext } from '@apollo/client/link/context'
+import { CSRF_TOKEN_HEADER } from './csrf'
 
 export const createBrowserClient = (csrfToken: string) => {
   const httpLink = createHttpLink({
@@ -9,7 +10,7 @@ export const createBrowserClient = (csrfToken: string) => {
   const authLink = setContext((_, { headers }) => ({
     headers: {
       ...headers,
-      'Starlight-CSRF-Token': csrfToken,
+      [CSRF_TOKEN_HEADER]: csrfToken,
     }
   }))
 
