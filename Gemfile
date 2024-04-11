@@ -5,8 +5,10 @@ source 'https://rubygems.org'
 ruby '3.2.2'
 
 gem 'bootsnap', require: false
+gem 'bootstrap'
 gem 'ed25519'
 gem 'has_unique_attribute'
+gem 'importmap-rails', '~> 2.0'
 gem 'oauth2'
 gem 'pg', '~> 1.1'
 gem 'puma', '>= 5.0'
@@ -17,6 +19,7 @@ gem 'view_component'
 
 group :development do
   gem 'annotate'
+  gem 'mini_racer'
   gem 'rack-mini-profiler'
   gem 'web-console'
 end

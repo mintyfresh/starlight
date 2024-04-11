@@ -180,6 +180,11 @@ class Event < ApplicationRecord
     self.registration_ends_at_date, self.registration_ends_at_time = extract_date_and_time(timestamp)
   end
 
+  # @return [String]
+  def to_param
+    slug
+  end
+
 protected
 
   # @param date [Date, nil]

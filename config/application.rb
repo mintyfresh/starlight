@@ -32,6 +32,8 @@ module Starlight
     config.generators do |g|
       g.test_framework :rspec
       g.fixture_replacement :factory_bot, dir: 'spec/factories'
+      g.helper false
+      g.assets false
     end
   end
 end
