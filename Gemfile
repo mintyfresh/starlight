@@ -23,6 +23,7 @@ end
 
 group :development, :test do
   gem 'byebug', platforms: %i[mri windows]
+  gem 'dotenv-rails'
   gem 'factory_bot_rails'
   gem 'faker'
   gem 'rubocop', require: false
