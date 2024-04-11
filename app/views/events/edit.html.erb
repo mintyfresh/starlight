@@ -1,5 +1,5 @@
 <h1>Edit <%= @event.name.presence || @event.name_was %></h1>
-<%= form_with(model: @event) do |form| %> 
+<%= form_with(model: @event, class: 'mb-5') do |form| %> 
   <%= form.group class: 'mb-3' do %>
     <%= form.label :name %>
     <%= form.text_field :name %>
@@ -14,6 +14,38 @@
     <%= form.label :description %>
     <%= form.text_area :description %>
     <%= form.field_errors :description %>
+  <% end %>
+  <%= form.group class: 'mb-3' do %>
+    <%= form.label :time_zone %>
+    <%= form.select :time_zone, options_from_collection_for_select(TZInfo::Timezone.all, :identifier, :friendly_identifier, @event.time_zone) %>
+    <%= form.field_errors :time_zone %>
+  <% end %>
+  <div class="row row-cols-md-2">
+    <%= form.group class: 'col mb-3' do %>
+      <%= form.label :starts_at %>
+      <%= form.datetime_local_field :starts_at %>
+      <%= form.field_errors :starts_at %>
+    <% end %>
+    <%= form.group class: 'col mb-3' do %>
+      <%= form.label :ends_at %>
+      <%= form.datetime_local_field :ends_at %>
+      <%= form.field_errors :ends_at %>
+    <% end %>
+    <%= form.group class: 'col mb-3' do %>
+      <%= form.label :registration_starts_at %>
+      <%= form.datetime_local_field :registration_starts_at %>
+      <%= form.field_errors :registration_starts_at %>
+    <% end %>
+    <%= form.group class: 'col mb-3' do %>
+      <%= form.label :registration_ends_at %>
+      <%= form.datetime_local_field :registration_ends_at %>
+      <%= form.field_errors :registration_ends_at %>
+    <% end %>
+  </div>
+  <%= form.group class: 'mb-3' do %>
+    <%= form.label :registrations_limit %>
+    <%= form.number_field :registrations_limit %>
+    <%= form.field_errors :registrations_limit %>
   <% end %>
   <%= form.group do %>
     <%= form.submit %>

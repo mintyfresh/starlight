@@ -1,6 +1,25 @@
 # frozen_string_literal: true
 
 class BootstrapFormBuilder < ActionView::Helpers::FormBuilder
+  # @type [Hash {Symbol => Array<String>}]
+  FORM_CONTROL_FIELDS = {
+    text_field:           %w[form-control],
+    text_area:            %w[form-control],
+    file_field:           %w[form-control],
+    email_field:          %w[form-control],
+    telephone_field:      %w[form-control],
+    number_field:         %w[form-control],
+    password_field:       %w[form-control],
+    search_field:         %w[form-control],
+    url_field:            %w[form-control],
+    datetime_field:       %w[form-control],
+    datetime_local_field: %w[form-control],
+    date_field:           %w[form-control],
+    month_field:          %w[form-control],
+    week_field:           %w[form-control],
+    time_field:           %w[form-control]
+  }.freeze
+
   # @param options [Hash]
   # @return [String]
   def group(**options, &)
@@ -33,24 +52,13 @@ class BootstrapFormBuilder < ActionView::Helpers::FormBuilder
     @template.content_tag(:div, content, options, &)
   end
 
-  # @param name [String]
-  # @param options [Hash]
-  # @return [String]
-  def text_area(name, options = {}, &)
-    options = apply_css_class(options, 'form-control')
-    options = apply_errors_to_element(options, name)
+  FORM_CONTROL_FIELDS.each do |method_name, css_class|
+    define_method(method_name) do |name, options = {}, &block|
+      options = apply_css_class(options, *css_class)
+      options = apply_errors_to_element(options, name)
 
-    super(name, options, &)
-  end
-
-  # @param name [String]
-  # @param options [Hash]
-  # @return [String]
-  def text_field(name, options = {}, &)
-    options = apply_css_class(options, 'form-control')
-    options = apply_errors_to_element(options, name)
-
-    super(name, options, &)
+      super(name, options, &block)
+    end
   end
 
   # @param name [String]
@@ -127,6 +135,8 @@ class BootstrapFormBuilder < ActionView::Helpers::FormBuilder
     field_id(name, :errors)
   end
 
+  # @param name [String, Symbol]
+  # @return [String]
   def field_errors(name)
     return if (errors = errors_for_field(name)).blank?
 

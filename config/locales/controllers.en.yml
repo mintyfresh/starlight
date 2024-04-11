@@ -1,0 +1,8 @@
+---
+en:
+  events:
+    update:
+      success: 'Event %{name} was successfully updated'
+    publish:
+      failure: 'Failed to publish event: %{errors}'
+      success: 'Event %{name} was successfully published'
