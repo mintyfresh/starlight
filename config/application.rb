@@ -35,5 +35,7 @@ module Starlight
       g.helper false
       g.assets false
     end
+
+    config.action_view.field_error_proc = -> (html_tag, _instance) { html_tag }
   end
 end

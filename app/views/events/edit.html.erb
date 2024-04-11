@@ -1,0 +1,21 @@
+<h1>Edit <%= @event.name.presence || @event.name_was %></h1>
+<%= form_with(model: @event) do |form| %> 
+  <%= form.group class: 'mb-3' do %>
+    <%= form.label :name %>
+    <%= form.text_field :name %>
+    <%= form.field_errors :name %>
+  <% end %>
+  <%= form.group class: 'mb-3' do %>
+    <%= form.label :location %>
+    <%= form.text_field :location %>
+    <%= form.field_errors :location %>
+  <% end %>
+  <%= form.group class: 'mb-3' do %>
+    <%= form.label :description %>
+    <%= form.text_area :description %>
+    <%= form.field_errors :description %>
+  <% end %>
+  <%= form.group do %>
+    <%= form.submit %>
+  <% end %>
+<% end %>
