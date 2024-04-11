@@ -51,4 +51,8 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
+
+  config.around(:each, :freeze_time) do |example|
+    freeze_time { example.run }
+  end
 end

@@ -76,6 +76,9 @@ RSpec/HookArgument:
 RSpec/NestedGroups:
   Max: 5
 
+RSpecRails/NegationBeValid:
+  EnforcedStyle: be_invalid
+
 Style/AccessorGrouping:
   EnforcedStyle: separated
 
