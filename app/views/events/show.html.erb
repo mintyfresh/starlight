@@ -1,1 +1,38 @@
-<h1><%= @event.name %></h1>
+<div class="row">
+  <div class="col">
+    <h1><%= @event.name %></h1>
+  </div>
+  <div class="col-auto mt-auto">
+    <div class="btn-toolbar gap-2">
+      <% if @event.draft? %>
+        <%= button_to [:publish, @event], class: 'btn btn-primary', method: :post do %>
+          Publish
+        <% end %>
+      <% end %>
+      <%= link_to [:edit, @event], class: 'btn btn-secondary' do %>
+        Edit
+      <% end %>
+    </div>
+  </div>
+</div>
+<%= @event.model_name.human %> created by <%= @event.created_by.name %>
+<hr />
+<p><%= @event.description %></p>
+<dl>
+  <dt><%= @event.human_attribute_name(:location) %></dt>
+  <dd><%= @event.location || tag.span('Not specified', class: 'text-muted') %><dd>
+  <dt><%= @event.human_attribute_name(:time_zone) %></dt>
+  <dd><%= @event.time_zone || tag.span('Not specified', class: 'text-muted') %></dd>
+  <dt><%= @event.human_attribute_name(:starts_at) %></dt>
+  <dd><%= @event.starts_at ? time_tag(@event.starts_at, format: :long, title: @event.time_zone) : tag.span('Not specified', class: 'text-muted') %></dd>
+  <dt><%= @event.human_attribute_name(:ends_at) %></dt>
+  <dd><%= @event.ends_at ? time_tag(@event.ends_at, format: :long, title: @event.time_zone) : tag.span('Not specified', class: 'text-muted') %></dd>
+  <% if @event.registration_starts_at.present? %>
+    <dt><%= @event.human_attribute_name(:registration_starts_at) %></dt>
+    <dd><%= time_tag(@event.registration_starts_at, format: :long, title: @event.time_zone) %></dd>
+  <% end %>
+  <% if @event.registration_ends_at.present? %>
+    <dt><%= @event.human_attribute_name(:registration_ends_at) %></dt>
+    <dd><%= time_tag(@event.registration_ends_at, format: :long, title: @event.time_zone) %></dd>
+  <% end %>
+</dl>
