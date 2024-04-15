@@ -45,10 +45,15 @@ class Event < ApplicationRecord
   # we reimplement these in the model to have access to unpermitted changes in these attributes
   self.ignored_columns += %w[starts_at ends_at registration_starts_at registration_ends_at]
 
-  attribute :starts_at_time, :string
-  attribute :ends_at_time, :string
-  attribute :registration_starts_at_time, :string
-  attribute :registration_ends_at_time, :string
+  strips_whitespace_from :name, :location, :description
+
+  attribute :starts_at_time, :time_only
+  attribute :ends_at_time, :time_only
+  attribute :registration_starts_at_time, :time_only
+  attribute :registration_ends_at_time, :time_only
+
+  # reconstructs the timestamps from their corresponding date and time columns, as well as the time zone
+  timestamps_from_parts :starts_at, :ends_at, :registration_starts_at, :registration_ends_at, time_zone: :time_zone
 
   belongs_to :created_by, class_name: 'User', inverse_of: :created_events
 
@@ -136,77 +141,8 @@ class Event < ApplicationRecord
     published? or update!(published_at: Time.current)
   end
 
-  # @return [ActiveSupport::TimeWithZone, nil]
-  def starts_at
-    timestamp_in_time_zone(starts_at_date, starts_at_time)
-  end
-
-  # @param timestamp [ActiveSupport::TimeWithZone, String, nil]
-  # @return [void]
-  def starts_at=(timestamp)
-    self.starts_at_date, self.starts_at_time = extract_date_and_time(timestamp)
-  end
-
-  # @return [ActiveSupport::TimeWithZone, nil]
-  def ends_at
-    timestamp_in_time_zone(ends_at_date, ends_at_time)
-  end
-
-  # @param timestamp [ActiveSupport::TimeWithZone, String, nil]
-  # @return [void]
-  def ends_at=(timestamp)
-    self.ends_at_date, self.ends_at_time = extract_date_and_time(timestamp)
-  end
-
-  # @return [ActiveSupport::TimeWithZone, nil]
-  def registration_starts_at
-    timestamp_in_time_zone(registration_starts_at_date, registration_starts_at_time)
-  end
-
-  # @param timestamp [ActiveSupport::TimeWithZone, String, nil]
-  # @return [void]
-  def registration_starts_at=(timestamp)
-    self.registration_starts_at_date, self.registration_starts_at_time = extract_date_and_time(timestamp)
-  end
-
-  # @return [ActiveSupport::TimeWithZone, nil]
-  def registration_ends_at
-    timestamp_in_time_zone(registration_ends_at_date, registration_ends_at_time)
-  end
-
-  # @param timestamp [ActiveSupport::TimeWithZone, String, nil]
-  # @return [void]
-  def registration_ends_at=(timestamp)
-    self.registration_ends_at_date, self.registration_ends_at_time = extract_date_and_time(timestamp)
-  end
-
   # @return [String]
   def to_param
     slug
-  end
-
-protected
-
-  # @param date [Date, nil]
-  # @param time [String, nil]
-  # @param time_zone [String, nil]
-  # @return [ActiveSupport::TimeWithZone, nil]
-  def timestamp_in_time_zone(date, time, time_zone: self.time_zone)
-    date && time && time_zone && ActiveSupport::TimeZone[time_zone]&.parse("#{date} #{time}")
-  end
-
-  # @param timestamp [ActiveSupport::TimeWithZone, String, nil]
-  # @return [Array<Date, String>, Array<nil, nil>]
-  def extract_date_and_time(timestamp)
-    case timestamp
-    when ActiveSupport::TimeWithZone, Time
-      [timestamp.to_date, timestamp.strftime('%H:%M:%S')]
-    when String
-      timestamp.split(/ |T/, 2)
-    when nil
-      [nil, nil]
-    else
-      raise ArgumentError, "Invalid timestamp: #{timestamp.inspect} (expected Time, String, or nil)"
-    end
   end
 end
