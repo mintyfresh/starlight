@@ -10,9 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_04_15_200759) do
+ActiveRecord::Schema[7.1].define(version: 2024_04_15_215343) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "event_announcement_configs", force: :cascade do |t|
+    t.bigint "event_id", null: false
+    t.bigint "discord_channel_id", null: false
+    t.bigint "discord_message_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["event_id"], name: "index_event_announcement_configs_on_event_id", unique: true
+  end
 
   create_table "event_role_configs", force: :cascade do |t|
     t.bigint "event_id", null: false
@@ -65,6 +74,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_15_200759) do
     t.index ["discord_user_id"], name: "index_users_on_discord_user_id", unique: true
   end
 
+  add_foreign_key "event_announcement_configs", "events"
   add_foreign_key "event_role_configs", "events"
   add_foreign_key "events", "users", column: "created_by_id"
 end

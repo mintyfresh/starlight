@@ -59,6 +59,9 @@ class Event < ApplicationRecord
 
   belongs_to :created_by, class_name: 'User', inverse_of: :created_events
 
+  has_one :announcement_config, class_name: 'EventAnnouncementConfig', dependent: :destroy, inverse_of: :event
+  accepts_nested_attributes_for :announcement_config, allow_destroy: true, update_only: true, reject_if: :all_blank
+
   has_one :role_config, class_name: 'EventRoleConfig', dependent: :destroy, inverse_of: :event
   accepts_nested_attributes_for :role_config, allow_destroy: true, update_only: true, reject_if: lambda { |attributes|
     attributes['name'].blank?
@@ -73,6 +76,7 @@ class Event < ApplicationRecord
   validates :registrations_limit, numericality: { only_integer: true, greater_than: 0 }, allow_nil: true
   validates :time_zone, time_zone: true
 
+  validates :announcement_config, associated: true
   validates :role_config, associated: true
 
   # the event must start before it ends

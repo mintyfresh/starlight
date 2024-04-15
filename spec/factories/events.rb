@@ -61,6 +61,10 @@ FactoryBot.define do
       published_at { Time.current }
     end
 
+    trait :with_announcement_config do
+      announcement_config { association(:event_announcement_config, event: instance) }
+    end
+
     trait :with_role_config do
       role_config { association(:event_role_config, event: instance) }
     end
