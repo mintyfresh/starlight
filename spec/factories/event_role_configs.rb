@@ -9,7 +9,7 @@
 #  discord_role_id :bigint
 #  name            :string           not null
 #  permissions     :string           default("0"), not null
-#  colour          :integer
+#  colour          :integer          default(0), not null
 #  hoist           :boolean          default(FALSE), not null
 #  mentionable     :boolean          default(FALSE), not null
 #  created_at      :datetime         not null

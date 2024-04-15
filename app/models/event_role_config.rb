@@ -9,7 +9,7 @@
 #  discord_role_id :bigint
 #  name            :string           not null
 #  permissions     :string           default("0"), not null
-#  colour          :integer
+#  colour          :integer          default(0), not null
 #  hoist           :boolean          default(FALSE), not null
 #  mentionable     :boolean          default(FALSE), not null
 #  created_at      :datetime         not null
@@ -42,9 +42,11 @@ class EventRoleConfig < ApplicationRecord
 
   validates :name, presence: true, length: { maximum: NAME_MAX_LENGTH }
   validates :permissions, presence: true
-  validates :colour, numericality: { in: 0x000000..0xFFFFFF, allow_nil: true }
+  validates :colour, numericality: { in: 0x000000..0xFFFFFF }
   validates :hoist, inclusion: { in: [true, false] }
   validates :mentionable, inclusion: { in: [true, false] }
+
+  publishes_messages_on :create, :update, :destroy
 
   # @param value [Integer, String, nil]
   # @return [void]

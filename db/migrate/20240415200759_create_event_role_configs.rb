@@ -7,7 +7,7 @@ class CreateEventRoleConfigs < ActiveRecord::Migration[7.1]
       t.bigint     :discord_role_id
       t.string     :name, null: false
       t.string     :permissions, null: false, default: '0'
-      t.integer    :colour
+      t.integer    :colour, null: false, default: 0x000000
       t.boolean    :hoist, null: false, default: false
       t.boolean    :mentionable, null: false, default: false
       t.timestamps

@@ -11,6 +11,9 @@ abort('The Rails environment is running in production mode!') if Rails.env.produ
 
 require 'rspec/rails'
 require 'action_policy/rspec/dsl'
+require 'webmock/rspec'
+
+Dir[Rails.root.join('spec/support/**/*.rb')].each { |file| require file }
 
 # Checks for pending migrations and applies them before tests are run.
 # If you are not using ActiveRecord, you can remove these lines.
@@ -23,6 +26,7 @@ end
 RSpec.configure do |config|
   config.include ActiveSupport::Testing::TimeHelpers
   config.include FactoryBot::Syntax::Methods
+  config.include DiscordWebMocks
 
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
@@ -54,5 +58,15 @@ RSpec.configure do |config|
 
   config.around(:each, :freeze_time) do |example|
     freeze_time { example.run }
+  end
+
+  config.before(:each) do
+    # Use a mock message bus in during testing
+    require 'moonfire/rspec'
+    Moonfire.message_bus = Moonfire::RSpec::TestMessageBus.new
+  end
+
+  config.before(:each) do
+    stub_request(:any, Discord::Client::API_PREFIX)
   end
 end

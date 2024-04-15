@@ -12,6 +12,7 @@ gem 'dry-types'
 gem 'ed25519'
 gem 'has_unique_attribute'
 gem 'importmap-rails', '~> 2.0'
+gem 'moonfire', github: 'mintyfresh/moonfire'
 gem 'oauth2'
 gem 'pg', '~> 1.1'
 gem 'puma', '>= 5.0'
@@ -41,4 +42,5 @@ end
 
 group :test do
   gem 'rspec-rails'
+  gem 'webmock'
 end

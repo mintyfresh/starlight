@@ -186,6 +186,10 @@ RSpec.describe Event do
       expect(publish).to be(true)
     end
 
+    it 'publishes a Event::PublishMessage' do
+      expect { publish }.to have_published(described_class, :publish).with(event:)
+    end
+
     context 'when the event is already published' do
       let(:event) { create(:event, :published) }
 

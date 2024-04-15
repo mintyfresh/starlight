@@ -110,6 +110,10 @@ class Event < ApplicationRecord
 
   slugifies :name
 
+  publishes_messages_on :create, :update, :destroy
+
+  publishes_message :publish, if: :published_by_last_save?
+
   # @!method self.published
   #   @return [Class<Event>]
   scope :published, -> { where.not(published_at: nil) }
@@ -143,5 +147,12 @@ class Event < ApplicationRecord
   # @raise [ActiveRecord::RecordInvalid] if the record cannot be published
   def publish!
     published? or update!(published_at: Time.current)
+  end
+
+  # Determines if the record was published by the last save operation.
+  #
+  # @return [Boolean]
+  def published_by_last_save?
+    published? && published_at_before_last_save.nil?
   end
 end

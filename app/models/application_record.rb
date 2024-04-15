@@ -3,6 +3,8 @@
 class ApplicationRecord < ActiveRecord::Base
   extend HasUniqueAttribute
 
+  include Moonfire::Model
+
   primary_abstract_class
 
   # @param attributes [Array<Symbol>] the names of the attributes to normalize
