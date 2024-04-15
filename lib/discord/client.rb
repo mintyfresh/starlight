@@ -9,12 +9,25 @@ module Discord
     include Roles
 
     # @param token [String] the Discord bot token
-    def initialize(token = ENV.fetch('DISCORD_BOT_TOKEN', nil))
+    # @return [Discord::Client]
+    def self.bot(token = ENV.fetch('DISCORD_BOT_TOKEN'))
+      new(token:, scheme: 'Bot')
+    end
+
+    # @param token [String] the User's access token
+    # @return [Discord::Client]
+    def self.user(token)
+      new(token:, scheme: 'Bearer')
+    end
+
+    # @param token [String] the Discord bot token
+    # @param scheme [String] the authorization scheme
+    def initialize(token:, scheme:)
       token.present? or
         raise ArgumentError, 'token is required'
 
       @client = Faraday.new(API_PREFIX) do |conn|
-        conn.request :authorization, 'Bot', token
+        conn.request :authorization, scheme, token
         conn.request :json
 
         conn.response :raise_error

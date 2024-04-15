@@ -1,0 +1,19 @@
+<%= tag.nav(**@html_options, class: ['navbar navbar-expand-lg bg-light', *@html_options[:class]]) do %>
+  <div class="container">
+    <%= link_to('Starlight', root_path, class: 'navbar-brand') %>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#starlight_navbar_collapse" aria-controls="starlight_navbar_collapse" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="starlight_navbar_collapse">
+      <% if @current_user %>
+        <span class="navbar-text">
+          Signed in as <%= @current_user.name %>
+        </span>
+      <% else %>
+        <div class="btn-toolbar ms-auto">
+          <%= link_to('Sign in', auth_sign_in_path, class: 'btn btn-outline-primary') %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% end %>

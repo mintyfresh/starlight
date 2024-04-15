@@ -1,5 +1,8 @@
 ---
 en:
+  auth:
+    discord:
+      success: 'Successfully signed-in with Discord'
   events:
     update:
       success: 'Event %{name} was successfully updated'
