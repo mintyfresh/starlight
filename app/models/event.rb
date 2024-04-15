@@ -37,6 +37,8 @@
 #  fk_rails_...  (created_by_id => users.id)
 #
 class Event < ApplicationRecord
+  include Sluggable
+
   NAME_MAX_LENGTH = 40
   LOCATION_MAX_LENGTH = 250
   DESCRIPTION_MAX_LENGTH = 5000
@@ -102,9 +104,7 @@ class Event < ApplicationRecord
     validates :ends_at, presence: true
   end
 
-  before_save if: :name_changed? do
-    self.slug = name.parameterize
-  end
+  slugifies :name
 
   # @!method self.published
   #   @return [Class<Event>]
@@ -139,10 +139,5 @@ class Event < ApplicationRecord
   # @raise [ActiveRecord::RecordInvalid] if the record cannot be published
   def publish!
     published? or update!(published_at: Time.current)
-  end
-
-  # @return [String]
-  def to_param
-    slug
   end
 end
