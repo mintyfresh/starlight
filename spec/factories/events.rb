@@ -53,6 +53,10 @@ FactoryBot.define do
       registrations_limit { Faker::Number.number(digits: 2) }
     end
 
+    trait :draft do
+      published_at { nil }
+    end
+
     trait :published do
       published_at { Time.current }
     end

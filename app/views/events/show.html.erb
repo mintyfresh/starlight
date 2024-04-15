@@ -4,13 +4,15 @@
   </div>
   <div class="col-auto mt-auto">
     <div class="btn-toolbar gap-2">
-      <% if @event.draft? %>
+      <% if @event.draft? && allowed_to?(:publish?, @event) %>
         <%= button_to [:publish, @event], class: 'btn btn-primary', method: :post do %>
           Publish
         <% end %>
       <% end %>
-      <%= link_to [:edit, @event], class: 'btn btn-secondary' do %>
-        Edit
+      <% if allowed_to?(:edit?, @event) %>
+        <%= link_to [:edit, @event], class: 'btn btn-secondary' do %>
+          Edit
+        <% end %>
       <% end %>
     </div>
   </div>

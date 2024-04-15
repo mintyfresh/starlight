@@ -4,6 +4,7 @@ source 'https://rubygems.org'
 
 ruby '3.2.2'
 
+gem 'action_policy'
 gem 'bootsnap', require: false
 gem 'bootstrap'
 gem 'ed25519'
