@@ -47,7 +47,7 @@ module Discord
     #   By default, commands are visible.
     #   @return [Boolean, nil]
     #   @deprecated Use `contexts` instead
-    attribute? :dm_permission, T::Params::Bool
+    attribute? :dm_permission, T::Params::Bool.optional
     # @!attribute [r] default_permission
     #   Not recommended for use as field will soon be deprecated.
     #   Indicates whether the command is enabled by default when the app is added to a guild, defaults to true.
@@ -56,7 +56,7 @@ module Discord
     # @!attribute [r] nsfw
     #   Indicates whether the command is age-restricted, defaults to false.
     #   @return [Boolean, nil]
-    attribute? :nsfw, T::Params::Bool
+    attribute? :nsfw, T::Params::Bool.optional
     # @!attribute [r] version
     #   Auto-incrementing version identifier updated during significant changes
     #   @return [Integer, nil]

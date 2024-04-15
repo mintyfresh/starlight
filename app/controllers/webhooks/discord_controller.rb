@@ -16,6 +16,8 @@ module Webhooks
       case request.type
       when Discord::Interaction::RequestType::PING
         render json: Discord::Interaction::Response.pong
+      when Discord::Interaction::RequestType::APPLICATION_COMMAND
+        render json: Commands.call(request)
       else
         # TODO: Implement me.
         head :ok
