@@ -31,6 +31,8 @@ class EventsController < ApplicationController
 
   # POST /events/:slug/publish
   def publish
+    authorize! @event
+
     if @event.publish
       flash.notice = t('.success', name: @event.name)
     else
