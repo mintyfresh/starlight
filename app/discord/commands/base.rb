@@ -137,5 +137,22 @@ module Commands
 
     # @return [Discord::Interaction::Request]
     attr_reader :request
+
+    # @return [Hash{String => Discord::ApplicationCommandInteractionDataOption}]
+    def options
+      @options ||= request.data.options.index_by(&:name)
+    end
+
+    # @param name [String, Symbol]
+    # @return [Discord::ApplicationCommandInteractionDataOption, nil]
+    def option(name)
+      options[name.to_s]
+    end
+
+    # @param message_class [Class<Messages::Base>]
+    # @return [Discord::Interaction::Response]
+    def render_message(message_class, ...)
+      Discord::Interaction::Response.channel_message(message_class.new(...).render)
+    end
   end
 end

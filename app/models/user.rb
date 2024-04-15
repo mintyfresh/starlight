@@ -20,4 +20,12 @@ class User < ApplicationRecord
 
   validates :name, presence: true
   validates :discord_user_id, presence: true
+
+  # @param discord_user [Discord::User]
+  # @return [User]
+  def self.upsert_from_discord!(discord_user)
+    create_with(name: discord_user.username).create_or_find_by!(discord_user_id: discord_user.id).tap do |user|
+      user.update!(name: discord_user.username) # Update the name in case it has changed
+    end
+  end
 end

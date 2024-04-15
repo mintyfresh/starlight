@@ -10,6 +10,14 @@ module Discord
       attribute? :custom_id, T::Params::String
       attribute? :url, T::Params::String
       attribute? :disabled, T::Params::Bool
+
+      # @param label [String]
+      # @param url [String]
+      # @param options [Hash]
+      # @return [Button]
+      def self.link(label, url, **)
+        new(**, label:, url:, style: ButtonStyle::LINK)
+      end
     end
   end
 end

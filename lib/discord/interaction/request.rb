@@ -10,7 +10,7 @@ module Discord
         attribute :name, T::Params::String
         attribute :type, T::Params::Integer
         attribute? :resolved, ResolvedData
-        attribute? :options, T::Params::Array
+        attribute? :options, T::Params::Array.of(ApplicationCommandInteractionDataOption)
         attribute? :guild_id, T::Params::Integer
         attribute? :target_id, T::Params::Integer
       end

@@ -8,9 +8,30 @@ module Commands
 
     # @return [Discord::Interaction::Response]
     def call
-      Discord::Interaction::Response.channel_message(
-        content: 'Test', flags: Discord::MessageFlags::EPHEMERAL
-      )
+      event = Event.new(event_params)
+
+      if event.save
+        render_message Messages::EventCreateSuccess, event
+      else
+        render_message Messages::EventCreateFailure, event
+      end
+    end
+
+  private
+
+    # @return [Hash]
+    def event_params
+      { name: option(:name)&.value, created_by: current_user, discord_guild_id: }
+    end
+
+    # @return [Integer]
+    def discord_guild_id
+      request.guild_id || request.data.guild_id
+    end
+
+    # @return [User]
+    def current_user
+      @current_user ||= User.upsert_from_discord!(request.member.user || request.user)
     end
   end
 end
