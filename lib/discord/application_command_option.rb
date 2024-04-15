@@ -4,13 +4,13 @@ module Discord
   class ApplicationCommandOption < DiscordObject
     attribute? :type, T::Params::Integer
     attribute? :name, T::Params::String
-    attribute? :name_localizations, T::LocalizationsMap
+    attribute? :name_localizations, T::LocalizationsMap.optional
     attribute? :description, T::Params::String
-    attribute? :description_localizations, T::LocalizationsMap
+    attribute? :description_localizations, T::LocalizationsMap.optional
     attribute? :required, T::Params::Bool
     attribute? :choices, T::Params::Array do
       attribute :name, T::Params::String
-      attribute? :name_localizations, T::LocalizationsMap
+      attribute? :name_localizations, T::LocalizationsMap.optional
       attribute :value, T::Params::Integer | T::Params::Float | T::Params::String
     end
     attribute? :options, T::Params::Array.of(self)

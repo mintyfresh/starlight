@@ -8,7 +8,7 @@ module Discord
         SelectMenu |
         TextInput
 
-      attribute :type, T::Params::Integer.constrained(eql: ComponentType::ACTION_ROW)
+      attribute :type, T::Params::Integer.constrained(eql: ComponentType::ACTION_ROW).default(ComponentType::ACTION_ROW)
       attribute :components, T::Params::Array.of(NestableComponent)
     end
   end

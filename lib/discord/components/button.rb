@@ -3,7 +3,7 @@
 module Discord
   module Components
     class Button < DiscordObject
-      attribute :type, T::Params::Integer.constrained(eql: ComponentType::BUTTON)
+      attribute :type, T::Params::Integer.constrained(eql: ComponentType::BUTTON).default(ComponentType::BUTTON)
       attribute :style, T::Params::Integer
       attribute? :label, T::Params::String
       attribute? :emoji, T::Params::Hash
