@@ -59,6 +59,11 @@ class Event < ApplicationRecord
 
   belongs_to :created_by, class_name: 'User', inverse_of: :created_events
 
+  has_one :role_config, class_name: 'EventRoleConfig', dependent: :destroy, inverse_of: :event
+  accepts_nested_attributes_for :role_config, allow_destroy: true, update_only: true, reject_if: lambda { |attributes|
+    attributes['name'].blank?
+  }
+
   has_unique_attribute :name, index: 'index_events_on_slug'
 
   validates :discord_guild_id, presence: true
@@ -66,10 +71,9 @@ class Event < ApplicationRecord
   validates :location, length: { maximum: LOCATION_MAX_LENGTH }
   validates :description, length: { maximum: DESCRIPTION_MAX_LENGTH }
   validates :registrations_limit, numericality: { only_integer: true, greater_than: 0 }, allow_nil: true
+  validates :time_zone, time_zone: true
 
-  validate if: -> { time_zone.present? } do
-    ActiveSupport::TimeZone[time_zone] or errors.add(:time_zone, :invalid)
-  end
+  validates :role_config, associated: true
 
   # the event must start before it ends
   validate if: -> { starts_at.present? && ends_at.present? } do

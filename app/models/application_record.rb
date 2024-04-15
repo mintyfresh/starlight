@@ -23,7 +23,7 @@ class ApplicationRecord < ActiveRecord::Base
   # @return [void]
   def self.timestamps_from_parts(*attributes, time_zone:)
     attributes.each do |attribute|
-      timestamp_from_parts(attribute, date: :"#{attribute}_date", time: :"#{attribute}_time", time_zone: time_zone)
+      timestamp_from_parts(attribute, date: :"#{attribute}_date", time: :"#{attribute}_time", time_zone:)
     end
   end
 

@@ -16,7 +16,8 @@ class EventPolicy < ApplicationPolicy
   params_filter :update do |params|
     params.permit(
       :name, :location, :description, :time_zone, :starts_at, :ends_at,
-      :registration_starts_at, :registration_ends_at, :registrations_limit
+      :registration_starts_at, :registration_ends_at, :registrations_limit,
+      role_config_attributes: %i[_destroy name permissions colour colour_as_hex hoist mentionable]
     )
   end
 

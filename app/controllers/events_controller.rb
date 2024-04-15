@@ -16,13 +16,15 @@ class EventsController < ApplicationController
   # GET /events/:slug/edit
   def edit
     authorize! @event
+
+    @event.role_config or @event.build_role_config
   end
 
   # PATCH /events/:slug
   def update
     authorize! @event
 
-    if @event.update(event_params)
+    if @event.update(event_update_params)
       redirect_to @event, notice: t('.success', name: @event.name)
     else
       render :edit, status: :unprocessable_entity
@@ -49,7 +51,7 @@ private
   end
 
   # @return [ActionController::Parameters]
-  def event_params
-    authorized(params.require(:event))
+  def event_update_params
+    authorized(params.require(:event), as: :update)
   end
 end

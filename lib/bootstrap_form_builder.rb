@@ -17,7 +17,8 @@ class BootstrapFormBuilder < ActionView::Helpers::FormBuilder
     date_field:           %w[form-control],
     month_field:          %w[form-control],
     week_field:           %w[form-control],
-    time_field:           %w[form-control]
+    time_field:           %w[form-control],
+    color_field:          %w[form-control form-control-color]
   }.freeze
 
   # @param options [Hash]
@@ -61,6 +62,8 @@ class BootstrapFormBuilder < ActionView::Helpers::FormBuilder
     end
   end
 
+  alias colour_field color_field
+
   # @param name [String]
   # @param choices [Array<String>, Hash]
   # @param options [Hash]
@@ -71,6 +74,35 @@ class BootstrapFormBuilder < ActionView::Helpers::FormBuilder
     html_options = apply_errors_to_element(html_options, name)
 
     super(name, choices, options, html_options, &)
+  end
+
+  # @param method [Symbol]
+  # @param options [Hash]
+  # @param checked_value [String]
+  # @param unchecked_value [String]
+  # @return [String]
+  def check_box(method, options = {}, checked_value = '1', unchecked_value = '0')
+    super(method, apply_css_class(options, 'form-check-input'), checked_value, unchecked_value)
+  end
+
+  # @param method [Symbol]
+  # @param options [Hash]
+  # @param label_options [Hash]
+  # @param wrapper_options [Hash]
+  # @return [String]
+  def check(method, options = {}, label_options = {}, wrapper_options = {})
+    @template.content_tag(:div, apply_css_class(wrapper_options, 'form-check')) do
+      check_box(method, options) + label(method, apply_css_class(label_options, 'form-check-label'))
+    end
+  end
+
+  # @param method [Symbol]
+  # @param options [Hash]
+  # @param label_options [Hash]
+  # @param wrapper_options [Hash]
+  # @return [String]
+  def switch(method, options = {}, label_options = {}, wrapper_options = {})
+    check(method, options.merge(role: 'switch'), label_options, apply_css_class(wrapper_options, 'form-switch'))
   end
 
   # @param value [String, Hash, nil]

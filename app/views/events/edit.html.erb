@@ -47,6 +47,42 @@
     <%= form.number_field :registrations_limit %>
     <%= form.field_errors :registrations_limit %>
   <% end %>
+  <%= form.fields_for :role_config do |role_config_form| %>
+    <div class="row">
+      <%= role_config_form.group class: 'col mb-3' do %>
+        <%= role_config_form.label :name %>
+        <%= role_config_form.text_field :name %>
+        <%= role_config_form.field_errors :name %>
+      <% end %>
+      <%= role_config_form.group class: 'col-auto mb-3' do %>
+        <%= role_config_form.label :colour %>
+        <%= role_config_form.colour_field :colour, value: role_config_form.object.colour_as_hex %>
+        <%= role_config_form.field_errors :colour %>
+      <% end %>
+    </div>
+    <%= role_config_form.group class: 'mb-3' do %>
+      <%= role_config_form.switch :hoist %>
+      <%= role_config_form.help_text do %>
+        Discord internally refers to this toggle as "hoist".
+      <% end %>
+    <% end %>
+    <%= role_config_form.group class: 'mb-3' do %>
+      <%= role_config_form.switch :mentionable %>
+      <%= role_config_form.help_text do %>
+        When enabled, users will be able to @mention this role in chat.
+      <% end %>
+    <% end %>
+    <%= role_config_form.group class: 'mb-3' do %>
+      <%= role_config_form.label :permissions %>
+      <%= role_config_form.text_field :permissions %>
+      <%= role_config_form.field_errors :permissions %>
+      <%= role_config_form.help_text do %>
+        <strong class="text-danger">Beware!</strong> Unless you really know what you are doing, you should leave the permissions field well enough alone.
+        Here be dragons and other dangerous things. Madness and suffering and pain await those who venture to carelessly put values into here.
+        Consider yourself warned.
+      <% end %>
+    <% end %>
+  <% end %>
   <%= form.group do %>
     <%= form.submit %>
   <% end %>
