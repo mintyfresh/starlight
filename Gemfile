@@ -7,6 +7,8 @@ ruby '3.2.2'
 gem 'action_policy'
 gem 'bootsnap', require: false
 gem 'bootstrap'
+gem 'dry-struct'
+gem 'dry-types'
 gem 'ed25519'
 gem 'has_unique_attribute'
 gem 'importmap-rails', '~> 2.0'
