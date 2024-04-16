@@ -48,9 +48,9 @@ module Discord
       # @param guild_id [Integer]
       # @param user_id [Integer]
       # @param role_id [Integer]
-      # @return [void]
+      # @return [Boolean]
       def remove_guild_member_role(guild_id, user_id:, role_id:)
-        @client.delete("guilds/#{guild_id}/members/#{user_id}/roles/#{role_id}").body
+        @client.delete("guilds/#{guild_id}/members/#{user_id}/roles/#{role_id}").body && true
       end
     end
   end

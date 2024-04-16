@@ -31,4 +31,6 @@ class Registration < ApplicationRecord
 
   has_one :decklist, dependent: :destroy, inverse_of: :registration
   accepts_nested_attributes_for :decklist, allow_destroy: true, update_only: true, reject_if: :all_blank
+
+  publishes_messages_on :create, :destroy
 end

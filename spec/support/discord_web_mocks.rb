@@ -5,7 +5,6 @@ module DiscordWebMocks
 
   def stub_discord_api_request(method, path, **)
     stub_request(method, "#{Discord::Client::API_PREFIX}/#{path}")
-      .with(headers: DEFAULT_HEADERS)
   end
 
   # @param channel_id [Integer]
@@ -49,6 +48,24 @@ module DiscordWebMocks
 
         response
       end
+  end
+
+  # @param guild_id [Integer]
+  # @param user_id [Integer]
+  # @param role_id [Integer]
+  # @see Discord::Client#add_guild_member_role
+  def stub_discord_add_guild_member_role(guild_id, user_id:, role_id:)
+    stub_discord_api_request(:put, "guilds/#{guild_id}/members/#{user_id}/roles/#{role_id}")
+      .to_return(status: 200, headers: DEFAULT_HEADERS, body: '')
+  end
+
+  # @param guild_id [Integer]
+  # @param user_id [Integer]
+  # @param role_id [Integer]
+  # @see Discord::Client#remove_guild_member_role
+  def stub_discord_remove_guild_member_role(guild_id, user_id:, role_id:)
+    stub_discord_api_request(:delete, "guilds/#{guild_id}/members/#{user_id}/roles/#{role_id}")
+      .to_return(status: 200, headers: DEFAULT_HEADERS, body: '')
   end
 
   # @param overrides [Hash]
