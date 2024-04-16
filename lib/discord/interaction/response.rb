@@ -16,7 +16,7 @@ module Discord
         attribute? :content, T::Coercible::String
         attribute? :embeds, T::Coercible::Array
         attribute? :flags, T::Coercible::Integer
-        attribute? :components, T::Coercible::Array
+        attribute? :components, T::Coercible::Array.of(Discord::Component)
         attribute? :attachments, T::Coercible::Array
       end
 
@@ -31,7 +31,13 @@ module Discord
                      T::Instance(MessageResponseData) |
                      T::Instance(ModalResponseData)
 
+      # @!attribute [r] type
+      #   The type of response
+      #   @return [Integer]
       attribute :type, T::Integer.enum(*ResponseType.all)
+      # @!attribute [r] data
+      #   The data to send with the response
+      #   @return [ResponseData, nil]
       attribute? :data, T::Nil | ResponseData
 
       # @return [Response]

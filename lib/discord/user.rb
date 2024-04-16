@@ -2,9 +2,17 @@
 
 module Discord
   class User < DiscordObject
+    # @!attribute [r] id
+    #   @return [Integer] the user's id
     attribute :id, T::Params::Integer
+    # @!attribute [r] username
+    #   @return [String] the user's username
     attribute :username, T::Params::String
+    # @!attribute [r] discriminator
+    #   @return [String] the user's discriminator
     attribute? :discriminator, T::Params::String
+    # @!attribute [r] global_name
+    #   @return [String] the user's global display name
     attribute? :global_name, T::Params::String.optional
     attribute :avatar, T::Params::String.optional
     attribute? :bot, T::Params::Bool
