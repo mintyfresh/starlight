@@ -13,6 +13,10 @@ class EventPolicy < ApplicationPolicy
     user == record.created_by
   end
 
+  def register?
+    user.present? && record.published?
+  end
+
   params_filter :update do |params|
     params.permit(
       :name, :location, :description, :time_zone, :starts_at, :ends_at,

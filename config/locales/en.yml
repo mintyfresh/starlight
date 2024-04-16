@@ -1,5 +1,13 @@
 ---
 en:
+  activerecord:
+    errors:
+      models:
+        event:
+          attributes:
+            base:
+              not_open_for_registration: '%{name} is not open for registration'
+
   errors:
     messages:
       after_attribute: must be after %{attribute} (%{value})

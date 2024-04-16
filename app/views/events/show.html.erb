@@ -4,6 +4,11 @@
   </div>
   <div class="col-auto mt-auto">
     <div class="btn-toolbar gap-2">
+      <% if @event.open_for_registration? && !@event.registered?(current_user) && allowed_to?(:register?, @event) %>
+        <%= button_to [:register, @event], class: 'btn btn-primary', method: :post do %>
+          Register
+        <% end %>
+      <% end %>
       <% if @event.draft? && allowed_to?(:publish?, @event) %>
         <%= button_to [:publish, @event], class: 'btn btn-primary', method: :post do %>
           Publish

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class EventsController < ApplicationController
-  before_action :set_event, only: %i[show edit update publish]
+  before_action :set_event, only: %i[show edit update publish register]
 
   # GET /events
   def index
@@ -37,6 +37,19 @@ class EventsController < ApplicationController
     authorize! @event
 
     if @event.publish
+      flash.notice = t('.success', name: @event.name)
+    else
+      flash.alert = t('.failure', errors: @event.errors.full_messages.to_sentence)
+    end
+
+    redirect_back fallback_location: @event
+  end
+
+  # POST /events/:slug/register
+  def register
+    authorize! @event
+
+    if @event.register(current_user)
       flash.notice = t('.success', name: @event.name)
     else
       flash.alert = t('.failure', errors: @event.errors.full_messages.to_sentence)

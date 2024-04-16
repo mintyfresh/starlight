@@ -8,4 +8,7 @@ en:
       success: 'Event %{name} was successfully updated'
     publish:
       failure: 'Failed to publish event: %{errors}'
-      success: 'Event %{name} was successfully published'
+      success: 'Successfully published %{name}'
+    register:
+      failure: 'Failed to register for event: %{errors}'
+      success: 'Successfully registered for %{name}'

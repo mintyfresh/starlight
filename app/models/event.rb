@@ -162,4 +162,48 @@ class Event < ApplicationRecord
   def published_by_last_save?
     published? && published_at_before_last_save.nil?
   end
+
+  # Determines if the event is open for registration.
+  #
+  # To be open for registration, the event must:
+  # - be published
+  # - be past its registration start date (if set)
+  # - not be past its registration end date (if set)
+  # - not be past its end date
+  #
+  # @return [Boolean]
+  def open_for_registration?
+    return false if draft?
+    return false if registration_starts_at&.future?
+    return false if registration_ends_at&.past?
+
+    ends_at.future?
+  end
+
+  # Checks if a player is registered for the event.
+  # Also returns false if the player is nil.
+  #
+  # @param player [User, nil]
+  # @return [Boolean]
+  def registered?(player)
+    player.present? && registrations.exists?(player:)
+  end
+
+  # Registers a player for the event.
+  # Optionally, the player can be registered by another user.
+  # Has no effect if the player is already registered.
+  #
+  # If the event is not open for registration, an error is added to the base.
+  #
+  # @param player [User]
+  # @param created_by [User]
+  # @return [Registration, nil]
+  def register(player, created_by: player)
+    unless open_for_registration?
+      errors.add(:base, :not_open_for_registration, name:)
+      return
+    end
+
+    registrations.create_with(created_by:).create_or_find_by!(player:)
+  end
 end

@@ -9,30 +9,50 @@ RSpec.describe EventPolicy, type: :policy do
   let(:record) { create(:event, :published) }
 
   describe_rule :show? do
-    succeed 'when event is published'
+    succeed 'when the event is published'
 
-    failed 'when event is a draft' do
+    failed 'when the event is a draft' do
       let(:record) { create(:event, :draft) }
 
-      succeed 'when user is the creator' do
+      succeed 'when the user is the creator' do
         let(:user) { record.created_by }
       end
     end
   end
 
   describe_rule :update? do
-    failed 'when user is not the creator'
+    failed 'when the user is not the creator'
 
-    succeed 'when user is the creator' do
+    succeed 'when the user is the creator' do
       let(:user) { record.created_by }
+    end
+
+    failed 'when the user is not signed in' do
+      let(:user) { nil }
     end
   end
 
   describe_rule :publish? do
-    failed 'when user is not the creator'
+    failed 'when the user is not the creator'
 
-    succeed 'when user is the creator' do
+    succeed 'when the user is the creator' do
       let(:user) { record.created_by }
+    end
+
+    failed 'when the user is not signed in' do
+      let(:user) { nil }
+    end
+  end
+
+  describe_rule :register? do
+    succeed 'when the event is published'
+
+    failed 'when the event is a draft' do
+      let(:record) { create(:event, :draft) }
+    end
+
+    failed 'when the user is not signed in' do
+      let(:user) { nil }
     end
   end
 

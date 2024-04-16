@@ -61,6 +61,11 @@ FactoryBot.define do
       published_at { Time.current }
     end
 
+    trait :open_for_registration do
+      registration_starts_at { 3.days.ago }
+      registration_ends_at { 3.days.from_now }
+    end
+
     trait :with_registrations do
       transient do
         registrations_count { 3 }

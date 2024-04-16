@@ -211,4 +211,73 @@ RSpec.describe Event do
       end
     end
   end
+
+  describe '#open_for_registration?' do
+    let(:event) { build(:event, :published, :open_for_registration) }
+
+    it 'returns true when the event is published and open for registration' do
+      expect(event).to be_open_for_registration
+    end
+
+    it 'returns false when the event is not published' do
+      event.published_at = nil
+      expect(event).not_to be_open_for_registration
+    end
+
+    it 'returns false when the registration starts in the future' do
+      event.registration_starts_at = 1.day.from_now
+      expect(event).not_to be_open_for_registration
+    end
+
+    it 'returns false when the registration ends in the past' do
+      event.registration_ends_at = 1.day.ago
+      expect(event).not_to be_open_for_registration
+    end
+
+    it 'returns false when the event has ended' do
+      event.ends_at = 1.day.ago
+      expect(event).not_to be_open_for_registration
+    end
+  end
+
+  describe '#register' do
+    subject(:register) { event.register(player) }
+
+    let(:event) { create(:event, :published, :open_for_registration) }
+    let(:player) { create(:user) }
+
+    it 'registers the player for the event' do
+      expect { register }.to change { event.registered?(player) }.from(false).to(true)
+    end
+
+    it 'returns the registration' do
+      expect(register).to be_a(Registration)
+        .and have_attributes(event:, player:, created_by: player)
+    end
+
+    context 'when the player is already registered' do
+      let!(:registration) { create(:registration, event:, player:) }
+
+      it 'does not create a new registration' do
+        expect { register }.not_to change { event.registrations.count }
+      end
+
+      it 'returns the existing registration' do
+        expect(register).to eq(registration)
+      end
+    end
+
+    context 'when the event is not open for registration' do
+      let(:event) { create(:event, :draft) }
+
+      it 'does not register the player' do
+        expect { register }.not_to change { event.registered?(player) }
+      end
+
+      it 'returns nil and sets an error on the record', :aggregate_failures do
+        expect(register).to be_nil
+        expect(event.errors).to be_of_kind(:base, :not_open_for_registration)
+      end
+    end
+  end
 end
