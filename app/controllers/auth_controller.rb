@@ -26,7 +26,7 @@ class AuthController < ApplicationController
     client = Discord::Client.user(access_token.token)
     self.current_user = User.upsert_from_discord!(client.me)
 
-    redirect_to root_path, notice: t('.success')
+    redirect_to return_path, notice: t('.success')
   end
 
 private
@@ -41,5 +41,10 @@ private
 
     # clear the state cookie after successful validation
     cookies.encrypted.delete(:discord_state)
+  end
+
+  # @return [String]
+  def return_path
+    flash[:return_path] || root_path
   end
 end
