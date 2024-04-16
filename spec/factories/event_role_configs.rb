@@ -24,7 +24,7 @@
 #  fk_rails_...  (event_id => events.id)
 #
 FactoryBot.define do
-  factory :event_role_config do
+  factory :event_role_config, class: 'Event::RoleConfig' do
     event
     name { Faker::Lorem.word }
 

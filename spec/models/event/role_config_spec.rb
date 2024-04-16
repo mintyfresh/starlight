@@ -25,7 +25,7 @@
 #
 require 'rails_helper'
 
-RSpec.describe EventRoleConfig do
+RSpec.describe Event::RoleConfig do
   subject(:config) { build(:event_role_config) }
 
   it 'has a valid factory' do

@@ -5,16 +5,16 @@ require 'rails_helper'
 RSpec.describe Event::CreateDiscordRoleSubscriber, type: :subscriber do
   subject(:subscriber) { described_class }
 
-  it 'accepts EventRoleConfig::CreateMessage when the event is published' do
+  it 'accepts Event::RoleConfig::CreateMessage when the event is published' do
     event = create(:event, :published)
     event_role_config = create(:event_role_config, event:)
-    expect(subscriber).to accept(EventRoleConfig::CreateMessage.new(event_role_config:))
+    expect(subscriber).to accept(Event::RoleConfig::CreateMessage.new(event_role_config:))
   end
 
-  it 'does not accept EventRoleConfig::CreateMessage when the event is not published' do
+  it 'does not accept Event::RoleConfig::CreateMessage when the event is not published' do
     event = create(:event, :draft)
     event_role_config = create(:event_role_config, event:)
-    expect(subscriber).not_to accept(EventRoleConfig::CreateMessage.new(event_role_config:))
+    expect(subscriber).not_to accept(Event::RoleConfig::CreateMessage.new(event_role_config:))
   end
 
   it 'accepts Event::PublishMessage when the event has a role configuration' do

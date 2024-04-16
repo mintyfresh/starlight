@@ -2,7 +2,7 @@
 
 class Event
   class CreateDiscordRoleSubscriber < ApplicationSubscriber
-    subscribes_to EventRoleConfig::CreateMessage do |message|
+    subscribes_to Event::RoleConfig::CreateMessage do |message|
       # only create roles for published events
       message.event_role_config.event.published?
     end
@@ -24,7 +24,7 @@ class Event
     # @return [Event]
     def event
       case message
-      when EventRoleConfig::CreateMessage
+      when Event::RoleConfig::CreateMessage
         message.event_role_config.event
       when Event::PublishMessage
         message.event
@@ -33,10 +33,10 @@ class Event
       end
     end
 
-    # @return [EventRoleConfig]
+    # @return [Event::RoleConfig]
     def role_config
       case message
-      when EventRoleConfig::CreateMessage
+      when Event::RoleConfig::CreateMessage
         message.event_role_config
       when Event::PublishMessage
         message.event.role_config

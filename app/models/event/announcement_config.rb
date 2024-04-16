@@ -19,10 +19,12 @@
 #
 #  fk_rails_...  (event_id => events.id)
 #
-class EventAnnouncementConfig < ApplicationRecord
-  belongs_to :event, inverse_of: :announcement_config
+class Event
+  class AnnouncementConfig < ApplicationRecord
+    belongs_to :event, inverse_of: :announcement_config
 
-  validates :discord_channel_id, presence: true
+    validates :discord_channel_id, presence: true
 
-  publishes_messages_on :create, :update, :destroy
+    publishes_messages_on :create, :update, :destroy
+  end
 end

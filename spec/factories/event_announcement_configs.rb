@@ -20,7 +20,7 @@
 #  fk_rails_...  (event_id => events.id)
 #
 FactoryBot.define do
-  factory :event_announcement_config do
+  factory :event_announcement_config, class: 'Event::AnnouncementConfig' do
     event
 
     discord_channel_id { Faker::Number.number(digits: 18) }

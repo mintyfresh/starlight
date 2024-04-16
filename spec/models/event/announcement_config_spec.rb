@@ -21,7 +21,7 @@
 #
 require 'rails_helper'
 
-RSpec.describe EventAnnouncementConfig do
+RSpec.describe Event::AnnouncementConfig do
   subject(:config) { build(:event_announcement_config) }
 
   it 'has a valid factory' do
