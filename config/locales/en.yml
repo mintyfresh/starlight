@@ -3,6 +3,10 @@ en:
   activerecord:
     errors:
       models:
+        decklist:
+          attributes:
+            ponyhead_url:
+              does_not_contain_cards: does not contain any cards or could not be parsed
         event:
           attributes:
             base:
@@ -12,6 +16,15 @@ en:
     messages:
       after_attribute: must be after %{attribute} (%{value})
       before_attribute: must be before %{attribute} (%{value})
+
+  ponyhead:
+    errors:
+      invalid: is not a valid URL
+      invalid_scheme: must an http:// or https:// URL
+      invalid_host: must be hosted on ponyhead.com
+      invalid_path: must be a deckbuilder or short URL
+      invalid_query: does not contain a decklist
+      invalid_short_url: is not a valid short URL
 
   time:
     formats:

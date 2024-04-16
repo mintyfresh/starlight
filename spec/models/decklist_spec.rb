@@ -62,4 +62,16 @@ RSpec.describe Decklist do
     decklist.ponyhead_url = 'https://ponyhead.com/decklist?v1code='
     expect(decklist).to be_invalid
   end
+
+  context 'when the decklist has a PonyHead short URL' do
+    let(:decklist) { build(:decklist, :with_short_url) }
+
+    it 'has a valid factory' do
+      expect(decklist).to be_valid
+    end
+
+    it 'is able to parse the card data' do
+      expect(decklist.cards).to be_present
+    end
+  end
 end
