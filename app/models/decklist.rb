@@ -33,7 +33,7 @@ class Decklist < ApplicationRecord
   validates :ponyhead_url, presence: true
 
   validate if: -> { ponyhead_url_changed? && ponyhead_url.present? } do
-    cards = PonyheadURLParser.new(ponyhead_url).parse
+    cards = PonyheadURLParser.parse(ponyhead_url)
     cards.present? or errors.add(:ponyhead_url, :does_not_contain_cards)
   rescue PonyheadURLParser::ParseError
     errors.add(:ponyhead_url, :invalid)
@@ -43,7 +43,7 @@ class Decklist < ApplicationRecord
   #
   # @return [Hash{String => Integer}]
   def cards
-    PonyheadURLParser.new(ponyhead_url).parse
+    PonyheadURLParser.parse(ponyhead_url)
   rescue PonyheadURLParser::ParseError => error
     logger.error { "Failed to parse decklist: #{error.message}" }
     logger.debug { error.backtrace.join("\n") }

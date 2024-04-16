@@ -12,26 +12,32 @@ class PonyheadURLParser
 
   I18N_SCOPE = 'ponyhead.errors'
 
+  # @param url [String]
+  # @return [Hash{String => Integer}]
+  def self.parse(url)
+    new(url).parse
+  end
+
   # @return [String]
   attr_reader :ponyhead_url
 
   # @param ponyhead_url [String]
   def initialize(ponyhead_url)
     @ponyhead_url = URI.parse(ponyhead_url)
+
+    validate!
   rescue URI::InvalidURIError
     raise_parse_error!(:invalid)
   end
 
   # @return [Hash{String => Integer}]
   def parse
-    validate!
-
     if @ponyhead_url.path == PONYHEAD_DECKBUILDER_PATH
       extract_cards_from_query
     elsif @ponyhead_url.path.starts_with?(PONYHEAD_SHORT_URL_PATH)
       extract_cards_from_short_url
     else
-      raise ArgumentError, "unsupported path: #{@ponyhead_url.path}"
+      raise NotImplementedError, "unsupported path: #{@ponyhead_url.path}"
     end
   end
 
