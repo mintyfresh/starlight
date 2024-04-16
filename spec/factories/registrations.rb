@@ -29,5 +29,9 @@ FactoryBot.define do
     event
     player factory: :user
     created_by { player }
+
+    trait :with_decklist do
+      decklist { association(:decklist, registration: instance) }
+    end
   end
 end

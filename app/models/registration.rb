@@ -28,4 +28,7 @@ class Registration < ApplicationRecord
   belongs_to :event, counter_cache: true, inverse_of: :registrations
   belongs_to :player, class_name: 'User', inverse_of: :registrations
   belongs_to :created_by, class_name: 'User', inverse_of: false
+
+  has_one :decklist, dependent: :destroy, inverse_of: :registration
+  accepts_nested_attributes_for :decklist, allow_destroy: true, update_only: true, reject_if: :all_blank
 end
