@@ -59,6 +59,9 @@ class Event < ApplicationRecord
 
   belongs_to :created_by, class_name: 'User', inverse_of: :created_events
 
+  has_many :registrations, dependent: :destroy, inverse_of: :event
+  has_many :registered_players, through: :registrations, source: :player
+
   has_one :announcement_config, class_name: 'Event::AnnouncementConfig', dependent: :destroy, inverse_of: :event
   accepts_nested_attributes_for :announcement_config, allow_destroy: true, update_only: true, reject_if: :all_blank
 

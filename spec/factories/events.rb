@@ -61,6 +61,14 @@ FactoryBot.define do
       published_at { Time.current }
     end
 
+    trait :with_registrations do
+      transient do
+        registrations_count { 3 }
+      end
+
+      registrations { build_list(:registration, registrations_count, event: instance) }
+    end
+
     trait :with_announcement_config do
       announcement_config { association(:event_announcement_config, event: instance) }
     end

@@ -18,6 +18,9 @@ class User < ApplicationRecord
   has_many :created_events, class_name: 'Event', dependent: :restrict_with_error,
            foreign_key: :created_by_id, inverse_of: :created_by
 
+  has_many :registrations, dependent: :destroy, foreign_key: :player_id, inverse_of: :player
+  has_many :registered_events, through: :registrations, source: :event
+
   validates :name, presence: true
   validates :discord_user_id, presence: true
 
