@@ -43,6 +43,8 @@ private
       session[:return_path] = return_path
     elsif !request.referer.match?(%r{/auth/(?:[^/]*)$})
       session[:return_path] = request.referer
+    else
+      session.delete(:return_path)
     end
   end
 
