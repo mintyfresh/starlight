@@ -4,12 +4,24 @@ module Components
   class Embed < Base
     MAX_FIELDS_COUNT = 25
 
-    def self.title(&)
-      define_method(:title, &)
+    # @overload title(value)
+    #   @param value [String]
+    #   @return [void]
+    # @overload title
+    #   @yieldreturn [String]
+    #   @return [void]
+    def self.title(title = nil, &block)
+      define_method(:title) { (title || instance_exec(&block)).presence }
     end
 
-    def self.description(&)
-      define_method(:description, &)
+    # @overload description(value)
+    #   @param value [String]
+    #   @return [void]
+    # @overload description
+    #   @yieldreturn [String]
+    #   @return [void]
+    def self.description(description = nil, &block)
+      define_method(:description) { (description || instance_exec(&block)).presence }
     end
 
     # @return [Hash{String => Proc}]
@@ -18,7 +30,7 @@ module Components
     end
 
     # @param name [String]
-    # @yieldreturn [String, Discord::EmbedField, nil]
+    # @yieldreturn [String, Hash, nil]
     # @return [void]
     def self.field(name, &block)
       # prevent adding more fields than the maximum allowed
@@ -29,15 +41,25 @@ module Components
       fields[name] = block
     end
 
-    # @yieldreturn [String, Hash, nil]
-    # @return [void]
-    def self.footer(&)
+    # @overload footer(value)
+    #   @param value [String, Hash]
+    #   @return [void]
+    # @overload footer
+    #   @yieldreturn [String, Hash, nil]
+    #   @return [void]
+    def self.footer(footer = nil, &)
       define_method(:footer) do
-        value = instance_exec(&)
+        value = (footer || instance_exec(&)).presence
         value = { text: value } if value.is_a?(String)
 
         value
       end
+    end
+
+    # @private
+    def self.inherited(subclass)
+      super
+      subclass.fields.merge!(fields)
     end
 
     # @return [Discord::Embed]
@@ -65,7 +87,7 @@ module Components
 
     # @return [Array, nil]
     def fields
-      self.class.fields.transform_values { |block| instance_exec(&block) }.compact.map do |name, value|
+      self.class.fields.transform_values { |block| instance_exec(&block) }.compact_blank.map do |name, value|
         value = { value: } if value.is_a?(String)
 
         { **value, name: }

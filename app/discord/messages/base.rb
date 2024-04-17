@@ -4,6 +4,11 @@ module Messages
   class Base
     include Rails.application.routes.url_helpers
 
+    # @return [Discord::Interaction::Response::MessageResponseData]
+    def self.render(...)
+      new(...).render
+    end
+
     # @abstract
     # @return [Discord::Interaction::Response::MessageResponseData]
     def render

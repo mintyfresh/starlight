@@ -37,10 +37,10 @@ module Components
 
     private
 
-      # @param time [Time]
-      # @return [String]
+      # @param time [Time, nil]
+      # @return [String, nil]
       def format_timestamp(time)
-        <<~TEXT.strip
+        time && <<~TEXT.strip
           <t:#{time.to_i}:f>
           (#{time.strftime('%B %-d, %Y %l:%M %p %Z')})
         TEXT

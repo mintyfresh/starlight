@@ -21,16 +21,13 @@ module Components
         )
       end
 
+      label 'Register'
+
       # @param event [Event]
       def initialize(event)
         super()
 
         @event = event
-      end
-
-      # @return [String]
-      def label
-        'Register'
       end
 
       # @return [String]

@@ -38,7 +38,7 @@ module Messages
 
     # @return [Discord::Components::Button]
     def view_event_button
-      Discord::Components::Button.link('View Online', event_url(@event))
+      Components::Event::ViewOnlineButton.render(@event)
     end
   end
 end
