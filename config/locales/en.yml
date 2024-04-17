@@ -1,6 +1,17 @@
 ---
 en:
   activerecord:
+    attributes:
+      event/decklist_config:
+        format/core: Core
+        format/adventure: Adventure
+        format/harmony: Harmony
+        format/nightmare: Nightmare
+        format/chaos: Chaos
+        format/custom: Custom
+        format_behaviour/reject_invalid: Reject non-conforming decklists
+        format_behaviour/require_approval: Require approval for non-conforming decklists
+        format_behaviour/accept_invalid: Accept non-conforming decklists
     errors:
       models:
         decklist:
