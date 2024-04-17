@@ -59,6 +59,12 @@
         <%= render Event::RoleConfigFieldsComponent.new(form:) %>
       <% end %>
     <% end %>
+    <%= extensions.with_item(expanded: @event.payment_config&.persisted?) do |item| %>
+      <% item.with_header 'Payment configuration' %>
+      <% item.with_body do %>
+        <%= render Event::PaymentConfigFieldsComponent.new(form:) %>
+      <% end %>
+    <% end %>
   <% end %>
   <%= form.base_errors %>
   <%= form.group do %>

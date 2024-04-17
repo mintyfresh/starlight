@@ -65,6 +65,9 @@ class Event < ApplicationRecord
   has_one :announcement_config, class_name: 'Event::AnnouncementConfig', dependent: :destroy, inverse_of: :event
   accepts_nested_attributes_for :announcement_config, allow_destroy: true, update_only: true, reject_if: :all_blank
 
+  has_one :payment_config, class_name: 'Event::PaymentConfig', dependent: :destroy, inverse_of: :event
+  accepts_nested_attributes_for :payment_config, allow_destroy: true, update_only: true, reject_if: :all_blank
+
   has_one :role_config, class_name: 'Event::RoleConfig', dependent: :destroy, inverse_of: :event
   accepts_nested_attributes_for :role_config, allow_destroy: true, update_only: true, reject_if: lambda { |attributes|
     attributes['name'].blank?
@@ -80,6 +83,7 @@ class Event < ApplicationRecord
   validates :time_zone, time_zone: true
 
   validates :announcement_config, associated: true
+  validates :payment_config, associated: true
   validates :role_config, associated: true
 
   # the event must start before it ends
