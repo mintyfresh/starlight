@@ -2,24 +2,24 @@
 
 module Discord
   class Message < DiscordObject
-    attribute :id, T::Params::Integer
-    attribute :channel_id, T::Params::Integer
-    attribute :author, User
+    attribute? :id, T::Params::Integer.optional
+    attribute? :channel_id, T::Params::Integer.optional
+    attribute? :author, User.optional
     attribute? :content, T::Params::String
-    attribute :timestamp, T::Params::DateTime
+    attribute? :timestamp, T::Params::DateTime
     attribute? :edited_timestamp, T::Params::DateTime.optional
-    attribute :tts, T::Params::Bool
-    attribute :mention_everyone, T::Params::Bool
-    attribute :mentions, T::Params::Array.of(User)
-    attribute :mention_roles, T::Params::Array
+    attribute? :tts, T::Params::Bool
+    attribute? :mention_everyone, T::Params::Bool
+    attribute? :mentions, T::Params::Array.of(User)
+    attribute? :mention_roles, T::Params::Array
     attribute? :mention_channels, T::Params::Array
     attribute? :attachments, T::Params::Array
     attribute? :embeds, T::Params::Array
     attribute? :reactions, T::Params::Array
     attribute? :nonce, T::Params::Integer | T::Params::String
-    attribute :pinned, T::Params::Bool
+    attribute? :pinned, T::Params::Bool
     attribute? :webhook_id, T::Params::Integer
-    attribute :type, T::Params::Integer
+    attribute? :type, T::Params::Integer
     attribute? :activity do
       attribute :type, T::Params::Integer
       attribute :party_id, T::Params::String
@@ -40,7 +40,7 @@ module Discord
 
     # @param flag [Integer]
     # @return [Boolean]
-    def has_flag?(flag)
+    def flag?(flag)
       (flags || 0) & flag == flag
     end
   end

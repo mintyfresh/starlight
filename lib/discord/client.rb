@@ -6,6 +6,7 @@ module Discord
     API_PREFIX  = "https://discord.com/api/v#{API_VERSION}".freeze
 
     include Commands
+    include Messages
     include Roles
 
     # @param token [String] the Discord bot token
