@@ -325,19 +325,6 @@ RSpec.describe Event do
         end
       end
     end
-
-    context 'when the event is not open for registration' do
-      let(:event) { create(:event, :draft) }
-
-      it 'does not register the player' do
-        expect { register }.not_to change { event.registered?(player) }
-      end
-
-      it 'returns nil and sets an error on the record', :aggregate_failures do
-        expect(register).to be_nil
-        expect(event.errors).to be_of_kind(:base, :not_open_for_registration)
-      end
-    end
   end
 
   describe '#check_in' do

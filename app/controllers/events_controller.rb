@@ -22,7 +22,7 @@ class EventsController < ApplicationController
   def update
     authorize! @event
 
-    if @event.update(event_update_params)
+    if @event.update(event_params_for(:update))
       redirect_to event_path(@event), notice: t('.success', name: @event.name)
     else
       render :edit, status: :unprocessable_entity
@@ -46,10 +46,13 @@ class EventsController < ApplicationController
   def register
     authorize! @event
 
-    if @event.register(current_user)
+    form = Event::RegisterForm.new(@event, event_params_for(:register))
+    form.player = current_user
+
+    if form.save
       flash.notice = t('.success', name: @event.name)
     else
-      flash.alert = t('.failure', errors: @event.errors.full_messages.to_sentence)
+      flash.alert = t('.failure', errors: form.errors.full_messages.to_sentence)
     end
 
     redirect_back fallback_location: event_path(@event)
@@ -74,8 +77,9 @@ private
     @event = Event.find_by!(slug: params[:slug])
   end
 
+  # @param action [Symbol]
   # @return [ActionController::Parameters]
-  def event_update_params
-    authorized(params.require(:event), as: :update, with: "#{@event.class.name}Policy".constantize)
+  def event_params_for(action)
+    authorized(params.require(:event), as: action, with: "#{@event.class.name}Policy".constantize)
   end
 end
