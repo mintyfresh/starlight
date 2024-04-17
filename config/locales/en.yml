@@ -24,6 +24,8 @@ en:
           attributes:
             base:
               not_open_for_registration: '%{name} is not open for registration'
+              not_open_for_check_in: '%{name} is not open for check-in'
+              not_registered: 'You must be registered for %{name} to check-in'
 
   errors:
     messages:
