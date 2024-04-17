@@ -1,0 +1,7 @@
+<%= tag.div(**@html_options, class: css_class, role: 'alert') do %>
+  <%= heading -%>
+  <%= @text || content %>
+  <% if @dismissible %>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  <% end %>
+<% end %>

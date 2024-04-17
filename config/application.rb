@@ -36,6 +36,20 @@ module Starlight
       g.assets false
     end
 
-    config.action_view.field_error_proc = -> (html_tag, _instance) { html_tag }
+    # Apply bootstrap error styling to form fields.
+    config.action_view.field_error_proc = proc { |html_tag, _|
+      fragment = Nokogiri::HTML.fragment(html_tag)
+      element  = fragment.child
+
+      # Don't apply the error styling to labels.
+      next html_tag if element.nil? || element.name == 'label'
+
+      # Append the `is-invalid` CSS class to the input element.
+      element[:class] = [*element[:class], 'is-invalid'].join(' ')
+      # Append the `aria-describedby` attribute to the input element to indicate the error message.
+      element['aria-describedby'] = [element['aria-describedby'], "#{element[:id]}_errors"].compact.join(' ')
+
+      element.to_html.html_safe # rubocop:disable Rails/OutputSafety
+    }
   end
 end

@@ -1,0 +1,5 @@
+<%= tag.div(class: css_class, **@html_options) do %>
+  <% @errors.each do |error| %>
+    <%= error.full_message %><br/>
+  <% end %>
+<% end %>

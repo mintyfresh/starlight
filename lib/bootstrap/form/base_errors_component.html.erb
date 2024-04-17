@@ -1,0 +1,5 @@
+<%= render Bootstrap::Alert::Component.new(variant: @variant, **@html_options) do %>
+  <% @errors.each do |error| %>
+    <%= error %><br/>
+  <% end %>
+<% end %>

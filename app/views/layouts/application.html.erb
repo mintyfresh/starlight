@@ -13,15 +13,11 @@
   <body>
     <%= render NavbarComponent.new(current_user:, class: 'mb-3') %>
     <div class="container">
-      <% if (notice = flash.notice).present? %>
-        <div class="alert alert-success" role="alert">
-          <%= notice %>
-        </div>
+      <% if (content = flash.notice).present? %>
+        <%= alert(content, variant: 'success', dismissible: true) %>
       <% end %>
-      <% if (alert = flash.alert).present? %>
-        <div class="alert alert-danger" role="alert">
-          <%= alert %>
-        </div>
+      <% if (content = flash.alert).present? %>
+        <%= alert(content, variant: 'danger', dismissible: true) %>
       <% end %>
       <%= yield %>
     </div>

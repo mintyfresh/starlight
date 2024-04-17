@@ -1,0 +1,5 @@
+<%= tag.h2(**html_options, id:, class: css_class) do %>
+  <%= tag.button(**button_options, type: 'button', class: button_css_class, aria: button_aria, data: button_data) do %>
+    <%= content %>
+  <% end %>
+<% end %>
