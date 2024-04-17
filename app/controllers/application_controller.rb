@@ -3,11 +3,9 @@
 class ApplicationController < ActionController::Base
   rescue_from ActionPolicy::Unauthorized do |error|
     if current_user
-      flash.alert = error.result.reasons.full_messages.to_sentence
-      redirect_back fallback_location: root_path
+      redirect_to root_path, alert: error.result.reasons.full_messages.to_sentence
     else
-      flash[:return_path] = request.fullpath
-      redirect_to auth_sign_in_path
+      redirect_to auth_sign_in_path(return_to: request.fullpath)
     end
   end
 

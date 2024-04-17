@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class AuthController < ApplicationController
+  before_action :save_return_path, only: :sign_in
   before_action :validate_oauth2_state, only: :discord
 
   # GET /auth/sign_in
@@ -26,10 +27,24 @@ class AuthController < ApplicationController
     client = Discord::Client.user(access_token.token)
     self.current_user = User.upsert_from_discord!(client.me)
 
-    redirect_to return_path, notice: t('.success')
+    redirect_to return_path, notice: t('.success', name: current_user.username)
   end
 
 private
+
+  # @return [String]
+  def return_path
+    session.delete(:return_path) || root_path
+  end
+
+  # @return [void]
+  def save_return_path
+    if (return_path = params[:return_to]).present?
+      session[:return_path] = return_path
+    elsif !request.referer.match?(%r{/auth/(?:[^/]*)$})
+      session[:return_path] = request.referer
+    end
+  end
 
   # @return [void]
   def validate_oauth2_state
@@ -41,10 +56,5 @@ private
 
     # clear the state cookie after successful validation
     cookies.encrypted.delete(:discord_state)
-  end
-
-  # @return [String]
-  def return_path
-    flash[:return_path] || root_path
   end
 end
