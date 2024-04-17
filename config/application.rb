@@ -51,5 +51,9 @@ module Starlight
 
       element.to_html.html_safe # rubocop:disable Rails/OutputSafety
     }
+
+    # Allow view components to work correctly with `fields_for`.
+    # (without this, various divs and other elements get duplicated in the output)
+    config.view_component.capture_compatibility_patch_enabled = true
   end
 end

@@ -1,0 +1,18 @@
+<%= @form.fields_for(:announcement_config, announcement_config) do |subform| %>
+  <%= subform.group(class: 'mb-3') do %>
+    <%= subform.label(:discord_channel_id) %>
+    <%= subform.select(
+      :discord_channel_id, channel_options,
+      { include_blank: true },
+      disabled: channel_options.none?,
+      readonly: subform.object.discord_message_id.present?
+    ) %>
+    <%= subform.field_errors(:discord_channel_id) %>
+  <% end %>
+  <%= alert(variant: 'info', class: 'mb-0') do %>
+    Enables Discord announcements for this event.
+    Selecting a channel will allow the bot to automatically post an announcement message when the event open for registration.
+    Players in that channel will be able to register for the event by interacting with the message.
+  <% end %>
+  <%= subform.base_errors %>
+<% end %>

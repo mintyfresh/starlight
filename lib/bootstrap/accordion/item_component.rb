@@ -14,8 +14,11 @@ module Bootstrap
       # @return [Hash]
       attr_reader :html_options
 
-      renders_one :header, lambda { |**options, &block|
-        HeaderComponent.new(**options, id: header_id, collapse_id:, expanded:, &block)
+      renders_one :header, lambda { |text = nil, **options, &block|
+        component = HeaderComponent.new(**options, id: header_id, collapse_id:, expanded:, &block)
+        component = component.with_content(text) if text
+
+        component
       }
       renders_one :body, lambda { |**options, &block|
         BodyComponent.new(**options, id: collapse_id, header_id:, parent_id:, expanded:, &block)
