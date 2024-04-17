@@ -50,6 +50,16 @@ class Event
 
     publishes_messages_on :create, :update, :destroy
 
+    # @!method self.ready_for_cleanup
+    #   Returns all role configurations that are ready for cleanup.
+    #   @return [Class<Event::RoleConfig>]
+    scope :ready_for_cleanup, lambda {
+      joins(:event)
+        .where.not(discord_role_id: nil)
+        .where.not(cleanup_delay: nil)
+        .where((Event.arel_table[:ends_at] + arel_table[:cleanup_delay]).lt(bind_param('now', Time.current)))
+    }
+
     # @param value [Integer, String, nil]
     # @return [void]
     def colour=(value)
@@ -66,6 +76,16 @@ class Event
     # @return [String, nil]
     def colour_as_hex
       colour && ('#%06X' % colour)
+    end
+
+    # Determines if the role configuration is ready for cleanup.
+    #
+    # @return [Boolean]
+    def ready_for_cleanup?
+      discord_role_id.present? &&
+        cleanup_delay.present? &&
+        event.ends_at.present? &&
+        (event.ends_at + cleanup_delay).past?
     end
 
     # @return [Hash{Symbol => Object}]

@@ -21,6 +21,7 @@ gem 'sprockets-rails'
 gem 'tod'
 gem 'tzinfo-data', platforms: %i[windows jruby]
 gem 'view_component'
+gem 'where_any'
 
 group :development do
   gem 'annotate'

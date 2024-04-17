@@ -49,6 +49,10 @@ FactoryBot.define do
     registration_starts_at { starts_at - 1.week }
     registration_ends_at { starts_at - 1.day }
 
+    trait :past do
+      starts_at { 3.months.ago }
+    end
+
     trait :with_registrations_limit do
       registrations_limit { Faker::Number.number(digits: 2) }
     end

@@ -81,4 +81,35 @@ RSpec.describe Event::RoleConfig do
     expect(config.colour).to eq(0xA1B2C3)
     expect(config.colour_as_hex).to eq('#A1B2C3')
   end
+
+  describe '.ready_for_cleanup' do
+    subject(:ready_for_cleanup) { described_class.ready_for_cleanup }
+
+    let(:config) { create(:event_role_config, :with_discord_role_id, event:, cleanup_delay: 1.week) }
+    let(:event) { create(:event, :past) }
+
+    it 'includes role configurations past their cleanup delay' do
+      expect(ready_for_cleanup).to include(config)
+    end
+
+    it "doesn't include role configurations without a cleanup delay" do
+      config.update!(cleanup_delay: nil)
+      expect(ready_for_cleanup).not_to include(config)
+    end
+
+    it "doesn't include role configurations without a Discord role ID" do
+      config.update!(discord_role_id: nil)
+      expect(ready_for_cleanup).not_to include(config)
+    end
+
+    it "doesn't include role configurations for events without an end date" do
+      config.event.update!(ends_at: nil)
+      expect(ready_for_cleanup).not_to include(config)
+    end
+
+    it "doesn't include role configurations for events that haven't ended" do
+      config.event.update!(ends_at: 1.week.from_now)
+      expect(ready_for_cleanup).not_to include(config)
+    end
+  end
 end

@@ -2,6 +2,7 @@
 
 class ApplicationRecord < ActiveRecord::Base
   extend HasUniqueAttribute
+  extend WhereAny
 
   include Moonfire::Model
 
