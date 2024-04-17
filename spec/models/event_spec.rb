@@ -240,6 +240,39 @@ RSpec.describe Event do
     end
   end
 
+  describe '#open_for_check_in?' do
+    let(:event) { build(:event, :published, :open_for_check_in) }
+
+    it 'returns true when the event is published and open for check-in' do
+      expect(event).to be_open_for_check_in
+    end
+
+    it 'returns false when the event is not published' do
+      event.published_at = nil
+      expect(event).not_to be_open_for_check_in
+    end
+
+    it 'returns false when the event has started' do
+      event.starts_at = 1.day.ago
+      expect(event).not_to be_open_for_check_in
+    end
+
+    it 'returns false when check-in has not started' do
+      event.check_in_config.starts_at = 1.day.from_now
+      expect(event).not_to be_open_for_check_in
+    end
+
+    it 'returns false when check-in has ended' do
+      event.check_in_config.ends_at = 1.day.ago
+      expect(event).not_to be_open_for_check_in
+    end
+
+    it 'returns false when the even does not enable check-in' do
+      event.check_in_config = nil
+      expect(event).not_to be_open_for_check_in
+    end
+  end
+
   describe '#register' do
     subject(:register) { event.register(player) }
 
@@ -277,6 +310,48 @@ RSpec.describe Event do
       it 'returns nil and sets an error on the record', :aggregate_failures do
         expect(register).to be_nil
         expect(event.errors).to be_of_kind(:base, :not_open_for_registration)
+      end
+    end
+  end
+
+  describe '#check_in' do
+    subject(:check_in) { event.check_in(player) }
+
+    let(:event) { create(:event, :published, :with_registrations, :open_for_check_in) }
+    let(:player) { event.registered_players.sample }
+
+    it 'checks in the player for the event' do
+      expect { check_in }.to change { event.checked_in?(player) }.from(false).to(true)
+    end
+
+    it 'returns the check-in' do
+      registration = event.registrations.find_by(player:)
+      expect(check_in).to be_a(CheckIn).and have_attributes(registration:, created_by: player)
+    end
+
+    context 'when the player is not registered' do
+      let(:player) { create(:user) }
+
+      it 'does not check in the player' do
+        expect { check_in }.not_to change { event.checked_in?(player) }
+      end
+
+      it 'returns nil and sets an error on the record', :aggregate_failures do
+        expect(check_in).to be_nil
+        expect(event.errors).to be_of_kind(:base, :not_registered)
+      end
+    end
+
+    context 'when the event is not open for check-in' do
+      let(:event) { create(:event, :published) }
+
+      it 'does not check in the player' do
+        expect { check_in }.not_to change { event.checked_in?(player) }
+      end
+
+      it 'returns nil and sets an error on the record', :aggregate_failures do
+        expect(check_in).to be_nil
+        expect(event.errors).to be_of_kind(:base, :not_open_for_check_in)
       end
     end
   end

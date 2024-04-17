@@ -70,6 +70,10 @@ FactoryBot.define do
       registration_ends_at { 3.days.from_now }
     end
 
+    trait :open_for_check_in do
+      check_in_config { association(:event_check_in_config, event: instance, starts_at: 3.days.ago) }
+    end
+
     trait :with_registrations do
       transient do
         registrations_count { 3 }
@@ -80,6 +84,10 @@ FactoryBot.define do
 
     trait :with_announcement_config do
       announcement_config { association(:event_announcement_config, event: instance) }
+    end
+
+    trait :with_check_in_config do
+      check_in_config { association(:event_check_in_config, event: instance) }
     end
 
     trait :with_role_config do

@@ -33,5 +33,9 @@ FactoryBot.define do
     trait :with_decklist do
       decklist { association(:decklist, registration: instance) }
     end
+
+    trait :with_check_in do
+      check_in { association(:check_in, registration: instance) }
+    end
   end
 end

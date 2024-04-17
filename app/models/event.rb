@@ -206,7 +206,7 @@ class Event < ApplicationRecord
   #
   # @return [Boolean]
   def open_for_check_in?
-    check_in_config&.open? || false
+    published? && check_in_config&.open? || false
   end
 
   # Checks if a player is registered for the event.
@@ -224,7 +224,7 @@ class Event < ApplicationRecord
   # @param player [User, nil]
   # @return [Boolean]
   def checked_in?(player)
-    false # TODO: Implement check-in mechanism
+    registrations.checked_in.exists?(player:)
   end
 
   # Registers a player for the event.
@@ -246,11 +246,13 @@ class Event < ApplicationRecord
   end
 
   # Checks in a player for the event.
+  # Optionally, the player can be checked in by another user.
   # Has no effect if the player is already checked in.
   #
-  # @param player [User]
+  # @param player [User] the player to check in
+  # @param created_by [User] the user checking in the player
   # @return [Boolean]
-  def check_in(player)
+  def check_in(player, created_by: player)
     # event must be open for check-in
     unless open_for_check_in?
       errors.add(:base, :not_open_for_check_in, name:)
@@ -258,11 +260,11 @@ class Event < ApplicationRecord
     end
 
     # player must be registered to check in
-    unless registered?(player)
+    if (registration = registrations.find_by(player:)).nil?
       errors.add(:base, :not_registered, name:)
       return
     end
 
-    false # TODO: Implement check-in mechanism
+    registration.check_in!(created_by: player)
   end
 end

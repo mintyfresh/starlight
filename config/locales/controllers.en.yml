@@ -12,3 +12,6 @@ en:
     register:
       failure: 'Failed to register for event: %{errors}'
       success: 'Successfully registered for %{name}'
+    check_in:
+      failure: 'Failed to check-in for event: %{errors}'
+      success: 'Successfully checked-in for %{name}'
