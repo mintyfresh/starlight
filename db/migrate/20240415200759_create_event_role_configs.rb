@@ -10,6 +10,7 @@ class CreateEventRoleConfigs < ActiveRecord::Migration[7.1]
       t.integer    :colour, null: false, default: 0x000000
       t.boolean    :hoist, null: false, default: false
       t.boolean    :mentionable, null: false, default: false
+      t.interval   :cleanup_delay
       t.timestamps
     end
   end

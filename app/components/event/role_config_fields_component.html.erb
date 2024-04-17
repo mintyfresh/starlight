@@ -24,6 +24,14 @@
     </p>
   <% end %>
   <%= subform.group(class: 'mb-3') do %>
+    <%= subform.label(:cleanup_delay) %>
+    <%= subform.select(:cleanup_delay, CLEANUP_DELAY_OPTIONS, { include_blank: true, selected: subform.object.cleanup_delay&.iso8601 }) %>
+    <%= subform.field_errors(:cleanup_delay) %>
+    <%= subform.help_text(:cleanup_delay) do %>
+      How long should the bot wait to delete the role after the event ends. Leave blank to keep the role indefinitely.
+    <% end %>
+  <% end %>
+  <%= subform.group(class: 'mb-3') do %>
     <%= subform.switch(:hoist, has_help_text: true) %>
     <%= subform.help_text(:hoist) do %>
       Discord internally refers to this toggle as "hoist".

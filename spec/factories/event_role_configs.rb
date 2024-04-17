@@ -12,6 +12,7 @@
 #  colour          :integer          default(0), not null
 #  hoist           :boolean          default(FALSE), not null
 #  mentionable     :boolean          default(FALSE), not null
+#  cleanup_delay   :interval
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #

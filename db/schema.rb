@@ -40,6 +40,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_16_051630) do
     t.integer "colour", default: 0, null: false
     t.boolean "hoist", default: false, null: false
     t.boolean "mentionable", default: false, null: false
+    t.interval "cleanup_delay"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["event_id"], name: "index_event_role_configs_on_event_id", unique: true
@@ -56,16 +57,16 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_16_051630) do
     t.string "time_zone"
     t.date "starts_at_date"
     t.time "starts_at_time"
-    t.virtual "starts_at", type: :timestamptz, as: "((starts_at_date + starts_at_time) AT TIME ZONE time_zone)", stored: true
+    t.virtual "starts_at", type: :timestamptz, as: "timezone((time_zone)::text, (starts_at_date + starts_at_time))", stored: true
     t.date "ends_at_date"
     t.time "ends_at_time"
-    t.virtual "ends_at", type: :timestamptz, as: "((ends_at_date + ends_at_time) AT TIME ZONE time_zone)", stored: true
+    t.virtual "ends_at", type: :timestamptz, as: "timezone((time_zone)::text, (ends_at_date + ends_at_time))", stored: true
     t.date "registration_starts_at_date"
     t.time "registration_starts_at_time"
-    t.virtual "registration_starts_at", type: :timestamptz, as: "((registration_starts_at_date + registration_starts_at_time) AT TIME ZONE time_zone)", stored: true
+    t.virtual "registration_starts_at", type: :timestamptz, as: "timezone((time_zone)::text, (registration_starts_at_date + registration_starts_at_time))", stored: true
     t.date "registration_ends_at_date"
     t.time "registration_ends_at_time"
-    t.virtual "registration_ends_at", type: :timestamptz, as: "((registration_ends_at_date + registration_ends_at_time) AT TIME ZONE time_zone)", stored: true
+    t.virtual "registration_ends_at", type: :timestamptz, as: "timezone((time_zone)::text, (registration_ends_at_date + registration_ends_at_time))", stored: true
     t.integer "registrations_count", default: 0, null: false
     t.integer "registrations_limit"
     t.datetime "published_at", precision: nil
