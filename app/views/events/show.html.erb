@@ -9,6 +9,11 @@
           Register
         <% end %>
       <% end %>
+      <% if @event.open_for_check_in? && @event.registered?(current_user) && !@event.checked_in?(current_user) && allowed_to?(:check_in?, @event) %>
+        <%= button_to check_in_for_event_path(@event), class: 'btn btn-primary', method: :post do %>
+          Check In
+        <% end %>
+      <% end %>
       <% if @event.draft? && allowed_to?(:publish?, @event) %>
         <%= button_to publish_event_path(@event), class: 'btn btn-primary', method: :post do %>
           Publish
@@ -22,24 +27,16 @@
     </div>
   </div>
 </div>
-<%= @event.model_name.human %> created by <%= @event.created_by.name %>
-<hr />
-<p><%= @event.description %></p>
-<dl>
-  <dt><%= @event.human_attribute_name(:location) %></dt>
-  <dd><%= @event.location || tag.span('Not specified', class: 'text-muted') %><dd>
-  <dt><%= @event.human_attribute_name(:time_zone) %></dt>
-  <dd><%= @event.time_zone || tag.span('Not specified', class: 'text-muted') %></dd>
-  <dt><%= @event.human_attribute_name(:starts_at) %></dt>
-  <dd><%= @event.starts_at ? time_tag(@event.starts_at, format: :long, title: @event.time_zone) : tag.span('Not specified', class: 'text-muted') %></dd>
-  <dt><%= @event.human_attribute_name(:ends_at) %></dt>
-  <dd><%= @event.ends_at ? time_tag(@event.ends_at, format: :long, title: @event.time_zone) : tag.span('Not specified', class: 'text-muted') %></dd>
-  <% if @event.registration_starts_at.present? %>
-    <dt><%= @event.human_attribute_name(:registration_starts_at) %></dt>
-    <dd><%= time_tag(@event.registration_starts_at, format: :long, title: @event.time_zone) %></dd>
-  <% end %>
-  <% if @event.registration_ends_at.present? %>
-    <dt><%= @event.human_attribute_name(:registration_ends_at) %></dt>
-    <dd><%= time_tag(@event.registration_ends_at, format: :long, title: @event.time_zone) %></dd>
-  <% end %>
-</dl>
+<p>
+  <%= @event.model_name.human %> created by <%= @event.created_by.name %>
+</p>
+<ul class="nav nav-tabs mb-3">
+  <%= nav_link_to('Details', event_path(@event), check_parameters: true) %>
+  <%= nav_link_to('Players', event_path(@event, tab: 'players')) %>
+</ul>
+<% case params[:tab] %>
+<% when 'players' %>
+  TODO
+<% else %>
+  <%= render Event::DetailsComponent.new(event: @event) %>
+<% end %>

@@ -14,6 +14,7 @@ Rails.application.routes.draw do
     member do
       post :publish
       post :register, as: :register_for
+      post :check_in, as: :check_in_for
     end
   end
 

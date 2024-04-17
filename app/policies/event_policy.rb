@@ -17,6 +17,10 @@ class EventPolicy < ApplicationPolicy
     user.present? && record.published?
   end
 
+  def check_in?
+    user.present? && record.published?
+  end
+
   # @param params [ActionController::Parameters] the parameters to filter
   # @param extra_params [Array<Symbol, Array, Hash>] additional parameters to permit
   # @return [ActionController::Parameters]

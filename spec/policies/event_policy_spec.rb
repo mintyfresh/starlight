@@ -56,6 +56,18 @@ RSpec.describe EventPolicy, type: :policy do
     end
   end
 
+  describe_rule :check_in? do
+    succeed 'when the event is published'
+
+    failed 'when the event is a draft' do
+      let(:record) { create(:event, :draft) }
+    end
+
+    failed 'when the user is not signed in' do
+      let(:user) { nil }
+    end
+  end
+
   describe 'relation scope' do
     subject(:scope) { policy.apply_scope(Event.all, type: :active_record_relation) }
 

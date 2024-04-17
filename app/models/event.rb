@@ -210,12 +210,21 @@ class Event < ApplicationRecord
   end
 
   # Checks if a player is registered for the event.
-  # Also returns false if the player is nil.
+  # Always returns false if the player is nil.
   #
   # @param player [User, nil]
   # @return [Boolean]
   def registered?(player)
     player.present? && registrations.exists?(player:)
+  end
+
+  # Checks if a player is checked-in for the event.
+  # Always returns false if the player is nil.
+  #
+  # @param player [User, nil]
+  # @return [Boolean]
+  def checked_in?(player)
+    false # TODO: Implement check-in mechanism
   end
 
   # Registers a player for the event.
@@ -234,5 +243,26 @@ class Event < ApplicationRecord
     end
 
     registrations.create_with(created_by:).create_or_find_by!(player:)
+  end
+
+  # Checks in a player for the event.
+  # Has no effect if the player is already checked in.
+  #
+  # @param player [User]
+  # @return [Boolean]
+  def check_in(player)
+    # event must be open for check-in
+    unless open_for_check_in?
+      errors.add(:base, :not_open_for_check_in, name:)
+      return
+    end
+
+    # player must be registered to check in
+    unless registered?(player)
+      errors.add(:base, :not_registered, name:)
+      return
+    end
+
+    false # TODO: Implement check-in mechanism
   end
 end
