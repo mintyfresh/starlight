@@ -1,4 +1,4 @@
-<%= form_with(model: @event, class: 'mb-5') do |form| %> 
+<%= form_with(model: @event, url: :event, scope: :event, class: 'mb-5') do |form| %> 
   <%= form.group(class: 'mb-3') do %>
     <%= form.label(:name) %>
     <%= form.text_field(:name, maxlength: Event::NAME_MAX_LENGTH, required: @event.published?) %>

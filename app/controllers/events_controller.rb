@@ -23,7 +23,7 @@ class EventsController < ApplicationController
     authorize! @event
 
     if @event.update(event_update_params)
-      redirect_to @event, notice: t('.success', name: @event.name)
+      redirect_to event_path(@event), notice: t('.success', name: @event.name)
     else
       render :edit, status: :unprocessable_entity
     end
@@ -39,7 +39,7 @@ class EventsController < ApplicationController
       flash.alert = t('.failure', errors: @event.errors.full_messages.to_sentence)
     end
 
-    redirect_back fallback_location: @event
+    redirect_back fallback_location: event_path(@event)
   end
 
   # POST /events/:slug/register
@@ -52,7 +52,7 @@ class EventsController < ApplicationController
       flash.alert = t('.failure', errors: @event.errors.full_messages.to_sentence)
     end
 
-    redirect_back fallback_location: @event
+    redirect_back fallback_location: event_path(@event)
   end
 
 private

@@ -13,7 +13,7 @@ Rails.application.routes.draw do
   resources :events, param: :slug, only: %i[index show edit update] do
     member do
       post :publish
-      post :register
+      post :register, as: :register_for
     end
   end
 

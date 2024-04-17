@@ -12,6 +12,8 @@ en:
         format_behaviour/reject_invalid: Reject non-conforming decklists
         format_behaviour/require_approval: Require approval for non-conforming decklists
         format_behaviour/accept_invalid: Accept non-conforming decklists
+      event/role_config:
+        hoist: Display role in members list on sidebar
     errors:
       models:
         decklist:

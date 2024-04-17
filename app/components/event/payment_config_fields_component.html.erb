@@ -1,11 +1,11 @@
 <%= @form.fields_for(:payment_config, payment_config) do |subform| %>
   <div class="row row-cols-md-2">
-    <%= subform.group(class: 'col mb-3') do %>
+    <%= subform.group(class: 'col mb-2') do %>
       <%= subform.label(:price) %>
       <%= subform.number_field(:price, min: 0) %>
       <%= subform.field_errors(:price) %>
     <% end %>
-    <%= subform.group(class: 'col mb-3') do %>
+    <%= subform.group(class: 'col mb-2') do %>
       <%= subform.label(:currency) %>
       <%= subform.select(:currency, currency_options, { include_blank: true }) %>
       <%= subform.field_errors(:currency) %>

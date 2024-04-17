@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/mintyfresh/moonfire.git
-  revision: 8019d8bd9bcb435e7c400b3c143ef543d001423f
+  revision: 53c33b29cf038abf6af0803f8ced2bc5998373b1
   specs:
     moonfire (0.1.0)
       rails (>= 7)
@@ -275,7 +275,7 @@ GEM
     rdoc (6.6.3.1)
       psych (>= 4.0.0)
     regexp_parser (2.9.0)
-    reline (0.5.1)
+    reline (0.5.2)
       io-console (~> 0.5)
     rexml (3.2.6)
     rspec-core (3.13.0)
