@@ -17,13 +17,19 @@ class EventPolicy < ApplicationPolicy
     user.present? && record.published?
   end
 
-  params_filter :update do |params|
+  # @param params [ActionController::Parameters] the parameters to filter
+  # @param extra_params [Array<Symbol, Array, Hash>] additional parameters to permit
+  # @return [ActionController::Parameters]
+  params_filter :update do |params, *extra_params|
     params.permit(
       :name, :location, :description, :time_zone, :starts_at, :ends_at,
       :registration_starts_at, :registration_ends_at, :registrations_limit,
-      announcement_config_attributes: %i[_destroy discord_channel_id],
-      payment_config_attributes:      %i[_destroy currency price],
-      role_config_attributes:         %i[_destroy name permissions colour colour_as_hex hoist mentionable cleanup_delay]
+      {
+        announcement_config_attributes: %i[_destroy discord_channel_id],
+        payment_config_attributes:      %i[_destroy currency price],
+        role_config_attributes:         %i[_destroy name permissions colour colour_as_hex hoist mentionable cleanup_delay],
+      },
+      *extra_params
     )
   end
 

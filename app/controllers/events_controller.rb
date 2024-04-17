@@ -63,6 +63,6 @@ private
 
   # @return [ActionController::Parameters]
   def event_update_params
-    authorized(params.require(:event), as: :update)
+    authorized(params.require(:event), as: :update, with: "#{@event.class.name}Policy".constantize)
   end
 end
