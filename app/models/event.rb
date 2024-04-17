@@ -233,16 +233,21 @@ class Event < ApplicationRecord
   #
   # If the event is not open for registration, an error is added to the base.
   #
-  # @param player [User]
-  # @param created_by [User]
+  # @param player [User] the player to register for the event
+  # @param attributes [Hash] additional attributes for the registration
+  # @param created_by [User] the user registering the player
   # @return [Registration, nil]
-  def register(player, created_by: player)
+  def register(player, attributes = {}, created_by: player)
     unless open_for_registration?
       errors.add(:base, :not_open_for_registration, name:)
       return
     end
 
-    registrations.create_with(created_by:).create_or_find_by!(player:)
+    registrations.create_with(attributes.merge(created_by:)).create_or_find_by!(player:).tap do |registration|
+      # Optionally, update the registration with additional attributes
+      # (Typically used to set the decklist for the registration)
+      registration.update!(attributes) if attributes.present?
+    end
   end
 
   # Checks in a player for the event.

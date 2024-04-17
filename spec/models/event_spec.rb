@@ -288,6 +288,21 @@ RSpec.describe Event do
         .and have_attributes(event:, player:, created_by: player)
     end
 
+    context 'with a decklist in the attributes' do
+      subject(:register) { event.register(player, { decklist_attributes: }) }
+
+      let(:decklist_attributes) { attributes_for(:decklist) }
+
+      it 'registers the player for the event' do
+        expect { register }.to change { event.registered?(player) }.from(false).to(true)
+      end
+
+      it 'creates a decklist for the registration' do
+        expect(register.decklist).to be_a(Decklist)
+          .and have_attributes(decklist_attributes)
+      end
+    end
+
     context 'when the player is already registered' do
       let!(:registration) { create(:registration, event:, player:) }
 
@@ -297,6 +312,17 @@ RSpec.describe Event do
 
       it 'returns the existing registration' do
         expect(register).to eq(registration)
+      end
+
+      context 'with a decklist in the attributes' do
+        subject(:register) { event.register(player, { decklist_attributes: }) }
+
+        let(:decklist_attributes) { attributes_for(:decklist) }
+
+        it 'updates the existing registration with the decklist', :aggregate_failures do
+          expect { register }.to change { registration.reload.decklist }
+          expect(register.decklist).to have_attributes(decklist_attributes)
+        end
       end
     end
 
