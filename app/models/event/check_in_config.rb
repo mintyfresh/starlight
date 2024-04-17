@@ -26,6 +26,9 @@ class Event
   class CheckInConfig < ApplicationRecord
     self.ignored_columns += %w[starts_at ends_at]
 
+    attribute :starts_at_time, :time_only
+    attribute :ends_at_time, :time_only
+
     belongs_to :event, inverse_of: :check_in_config
 
     timestamps_from_parts :starts_at, :ends_at, time_zone: :time_zone

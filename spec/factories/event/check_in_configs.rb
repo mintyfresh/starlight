@@ -24,8 +24,12 @@
 #
 FactoryBot.define do
   factory :event_check_in_config, class: 'Event::CheckInConfig' do
-    event { nil }
-    check_in_start_offset { '' }
-    check_in_end_offset { '' }
+    event
+    time_zone { event.time_zone }
+    starts_at { event.starts_at - 1.week }
+
+    trait :with_ends_at do
+      ends_at { event.starts_at - 1.day }
+    end
   end
 end

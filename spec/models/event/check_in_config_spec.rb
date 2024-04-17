@@ -25,5 +25,45 @@
 require 'rails_helper'
 
 RSpec.describe Event::CheckInConfig do
-  pending "add some examples to (or delete) #{__FILE__}"
+  subject(:config) { build(:event_check_in_config) }
+
+  it 'has a valid factory' do
+    expect(config).to be_valid
+  end
+
+  it 'is invalid without an event' do
+    config.event = nil
+    expect(config).to be_invalid
+  end
+
+  it 'sets the time zone from the event' do
+    config.time_zone = nil
+    config.valid?
+    expect(config.time_zone).to eq(config.event.time_zone)
+  end
+
+  it 'is invalid without a starts at' do
+    config.starts_at = nil
+    expect(config).to be_invalid
+  end
+
+  it 'is valid without an ends at' do
+    config.ends_at = nil
+    expect(config).to be_valid
+  end
+
+  it 'is invalid with a starts at after the ends at' do
+    config.ends_at = config.starts_at - 1.hour
+    expect(config).to be_invalid
+  end
+
+  it 'is invalid with a starts at after the event starts at' do
+    config.starts_at = config.event.starts_at + 1.hour
+    expect(config).to be_invalid
+  end
+
+  it 'is invalid with an ends at after the event ends at' do
+    config.ends_at = config.event.ends_at + 1.hour
+    expect(config).to be_invalid
+  end
 end
