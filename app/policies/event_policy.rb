@@ -26,8 +26,10 @@ class EventPolicy < ApplicationPolicy
       :registration_starts_at, :registration_ends_at, :registrations_limit,
       {
         announcement_config_attributes: %i[_destroy discord_channel_id],
+        check_in_config_attributes:     %i[_destroy starts_at ends_at],
         payment_config_attributes:      %i[_destroy currency price],
-        role_config_attributes:         %i[_destroy name permissions colour colour_as_hex hoist mentionable cleanup_delay],
+        role_config_attributes:         %i[_destroy name permissions colour colour_as_hex hoist mentionable
+                                           cleanup_delay]
       },
       *extra_params
     )

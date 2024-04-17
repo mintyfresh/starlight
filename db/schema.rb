@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_04_17_174136) do
+ActiveRecord::Schema[7.1].define(version: 2024_04_17_203029) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -30,6 +30,21 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_17_174136) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["event_id"], name: "index_event_announcement_configs_on_event_id", unique: true
+  end
+
+  create_table "event_check_in_configs", force: :cascade do |t|
+    t.bigint "event_id", null: false
+    t.string "time_zone"
+    t.date "starts_at_date", null: false
+    t.time "starts_at_time", null: false
+    t.virtual "starts_at", type: :timestamptz, as: "((starts_at_date + starts_at_time) AT TIME ZONE time_zone)", stored: true
+    t.date "ends_at_date"
+    t.time "ends_at_time"
+    t.virtual "ends_at", type: :timestamptz, as: "((ends_at_date + ends_at_time) AT TIME ZONE time_zone)", stored: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["event_id"], name: "index_event_check_in_configs_on_event_id", unique: true
+    t.check_constraint "starts_at IS NULL OR ends_at IS NULL OR starts_at < ends_at"
   end
 
   create_table "event_decklist_configs", force: :cascade do |t|
@@ -118,6 +133,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_17_174136) do
 
   add_foreign_key "decklists", "registrations"
   add_foreign_key "event_announcement_configs", "events"
+  add_foreign_key "event_check_in_configs", "events"
   add_foreign_key "event_decklist_configs", "events"
   add_foreign_key "event_payment_configs", "events"
   add_foreign_key "event_role_configs", "events"

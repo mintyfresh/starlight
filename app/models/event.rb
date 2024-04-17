@@ -65,6 +65,9 @@ class Event < ApplicationRecord
   has_one :announcement_config, class_name: 'Event::AnnouncementConfig', dependent: :destroy, inverse_of: :event
   accepts_nested_attributes_for :announcement_config, allow_destroy: true, update_only: true, reject_if: :all_blank
 
+  has_one :check_in_config, class_name: 'Event::CheckInConfig', dependent: :destroy, inverse_of: :event
+  accepts_nested_attributes_for :check_in_config, allow_destroy: true, update_only: true, reject_if: :all_blank
+
   has_one :payment_config, class_name: 'Event::PaymentConfig', dependent: :destroy, inverse_of: :event
   accepts_nested_attributes_for :payment_config, allow_destroy: true, update_only: true, reject_if: :all_blank
 
@@ -83,6 +86,7 @@ class Event < ApplicationRecord
   validates :time_zone, time_zone: true
 
   validates :announcement_config, associated: true
+  validates :check_in_config, associated: true
   validates :payment_config, associated: true
   validates :role_config, associated: true
 
@@ -196,6 +200,13 @@ class Event < ApplicationRecord
     return false if registration_ends_at&.past?
 
     ends_at.future?
+  end
+
+  # Determines if the event is open for check-in.
+  #
+  # @return [Boolean]
+  def open_for_check_in?
+    check_in_config&.open? || false
   end
 
   # Checks if a player is registered for the event.

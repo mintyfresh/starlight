@@ -33,7 +33,11 @@ module Bootstrap
     # @param options [Hash]
     # @return [String]
     def label(method, text = nil, **options, &)
-      super(method, text, apply_css_class(options, 'form-label'), &)
+      unless options[:class]&.include?('form-check-label')
+        options = apply_css_class(options, 'form-label')
+      end
+
+      super(method, text, options, &)
     end
 
     # @param text [String]

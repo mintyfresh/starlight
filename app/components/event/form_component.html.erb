@@ -41,7 +41,7 @@
       <%= form.field_errors(:registration_ends_at) %>
     <% end %>
   </div>
-  <%= form.group(class: 'mb-3') do %>
+  <%= form.group(class: 'mb-4') do %>
     <%= form.label(:registrations_limit) %>
     <%= form.number_field(:registrations_limit) %>
     <%= form.field_errors(:registrations_limit) %>
@@ -51,6 +51,12 @@
       <% item.with_header 'Announcement configuration' %>
       <% item.with_body do %>
         <%= render Event::AnnouncementConfigFieldsComponent.new(form:) %>
+      <% end %>
+    <% end %>
+    <%= extensions.with_item(expanded: @event.check_in_config&.persisted?) do |item| %>
+      <% item.with_header 'Check-In configuration' %>
+      <% item.with_body do %>
+        <%= render Event::CheckInConfigFieldsComponent.new(form:) %>
       <% end %>
     <% end %>
     <% extensions.with_item(expanded: @event.role_config&.persisted?) do |item| %>
