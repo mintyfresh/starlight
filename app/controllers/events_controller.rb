@@ -16,9 +16,6 @@ class EventsController < ApplicationController
   # GET /events/:slug/edit
   def edit
     authorize! @event
-
-    @event.announcement_config or @event.build_announcement_config
-    @event.role_config or @event.build_role_config
   end
 
   # PATCH /events/:slug

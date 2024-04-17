@@ -50,7 +50,7 @@
     <%= extensions.with_item(expanded: form.object.announcement_config&.persisted?) do |item| %>
       <% item.with_header { 'Announcement configuration' } %>
       <% item.with_body do %>
-        <%= form.fields_for(:announcement_config) do |announcement_config_form| %>
+        <%= form.fields_for(:announcement_config, form.object.announcement_config || Event::AnnouncementConfig.new) do |announcement_config_form| %>
           <%= form.group do %>
             <%= announcement_config_form.label(:discord_channel_id) %>
             <%= announcement_config_form.select(
@@ -68,7 +68,7 @@
     <% extensions.with_item(expanded: form.object.role_config&.persisted?) do |item| %>
       <% item.with_header { 'Discord role configuration' } %>
       <% item.with_body do %>
-        <%= form.fields_for(:role_config) do |role_config_form| %>
+        <%= form.fields_for(:role_config, form.object.role_config || Event::RoleConfig.new) do |role_config_form| %>
           <div class="row">
             <%= role_config_form.group(class: 'col mb-3') do %>
               <%= role_config_form.label(:name) %>
