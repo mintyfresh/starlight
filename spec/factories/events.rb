@@ -85,5 +85,9 @@ FactoryBot.define do
     trait :with_role_config do
       role_config { association(:event_role_config, event: instance) }
     end
+
+    trait :with_payment_config do
+      payment_config { association(:event_payment_config, event: instance) }
+    end
   end
 end

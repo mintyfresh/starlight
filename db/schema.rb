@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_04_17_020329) do
+ActiveRecord::Schema[7.1].define(version: 2024_04_17_174136) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -30,6 +30,16 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_17_020329) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["event_id"], name: "index_event_announcement_configs_on_event_id", unique: true
+  end
+
+  create_table "event_decklist_configs", force: :cascade do |t|
+    t.bigint "event_id", null: false
+    t.boolean "decklist_required", default: false, null: false
+    t.string "format"
+    t.string "format_behaviour"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["event_id"], name: "index_event_decklist_configs_on_event_id", unique: true
   end
 
   create_table "event_payment_configs", force: :cascade do |t|
@@ -108,6 +118,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_17_020329) do
 
   add_foreign_key "decklists", "registrations"
   add_foreign_key "event_announcement_configs", "events"
+  add_foreign_key "event_decklist_configs", "events"
   add_foreign_key "event_payment_configs", "events"
   add_foreign_key "event_role_configs", "events"
   add_foreign_key "events", "users", column: "created_by_id"

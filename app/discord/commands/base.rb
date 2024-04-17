@@ -149,6 +149,13 @@ module Commands
       options[name.to_s]
     end
 
+    # Converts the options to a Hash with the option names as keys, and the option values as values.
+    #
+    # @return [Hash{String => String}]
+    def options_as_hash
+      options.transform_values(&:value)
+    end
+
     # @param message_class [Class<Messages::Base>]
     # @return [Discord::Interaction::Response]
     def render_message(message_class, ...)

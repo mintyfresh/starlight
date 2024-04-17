@@ -4,6 +4,10 @@ module Commands
   class CreateEvent < Base
     description 'Creates a new event in a draft state'
 
+    option :type, :string, 'The type of event', required: true, choices: [
+      { name: 'Constructed', value: ConstructedEvent.sti_name }
+    ]
+
     option :name, :string, 'The name of the event', required: true, max_length: Event::NAME_MAX_LENGTH
 
     # @return [Discord::Interaction::Response]
@@ -21,7 +25,7 @@ module Commands
 
     # @return [Hash]
     def event_params
-      { name: option(:name)&.value, created_by: current_user, discord_guild_id: }
+      options_as_hash.merge(created_by: current_user, discord_guild_id:)
     end
 
     # @return [Integer]

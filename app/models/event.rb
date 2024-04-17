@@ -129,6 +129,20 @@ class Event < ApplicationRecord
   #   @return [Class<Event>]
   scope :published, -> { where.not(published_at: nil) }
 
+  # Determines if decklists can be submitted for this event.
+  #
+  # @return [Boolean]
+  def decklist_permitted?
+    false
+  end
+
+  # Determines if a decklist is required to register for this event.
+  #
+  # @return [Boolean]
+  def decklist_required?
+    false
+  end
+
   # Checks if the event is a draft.
   #
   # @return [Boolean]
