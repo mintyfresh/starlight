@@ -37,6 +37,7 @@
 #  fk_rails_...  (created_by_id => users.id)
 #
 class Event < ApplicationRecord
+  include ConfigurableFeatures
   include Sluggable
 
   NAME_MAX_LENGTH = 40
@@ -62,19 +63,10 @@ class Event < ApplicationRecord
   has_many :registrations, dependent: :destroy, inverse_of: :event
   has_many :registered_players, through: :registrations, source: :player
 
-  has_one :announcement_config, class_name: 'Event::AnnouncementConfig', dependent: :destroy, inverse_of: :event
-  accepts_nested_attributes_for :announcement_config, allow_destroy: true, update_only: true, reject_if: :all_blank
-
-  has_one :check_in_config, class_name: 'Event::CheckInConfig', dependent: :destroy, inverse_of: :event
-  accepts_nested_attributes_for :check_in_config, allow_destroy: true, update_only: true, reject_if: :all_blank
-
-  has_one :payment_config, class_name: 'Event::PaymentConfig', dependent: :destroy, inverse_of: :event
-  accepts_nested_attributes_for :payment_config, allow_destroy: true, update_only: true, reject_if: :all_blank
-
-  has_one :role_config, class_name: 'Event::RoleConfig', dependent: :destroy, inverse_of: :event
-  accepts_nested_attributes_for :role_config, allow_destroy: true, update_only: true, reject_if: lambda { |attributes|
-    attributes['name'].blank?
-  }
+  has_configurable_feature :announcement
+  has_configurable_feature :check_in
+  has_configurable_feature :payment
+  has_configurable_feature :role, reject_if: -> (attributes) { attributes['name'].blank? }
 
   has_unique_attribute :name, index: 'index_events_on_slug'
 
@@ -84,11 +76,6 @@ class Event < ApplicationRecord
   validates :description, length: { maximum: DESCRIPTION_MAX_LENGTH }
   validates :registrations_limit, numericality: { only_integer: true, greater_than: 0 }, allow_nil: true
   validates :time_zone, time_zone: true
-
-  validates :announcement_config, associated: true
-  validates :check_in_config, associated: true
-  validates :payment_config, associated: true
-  validates :role_config, associated: true
 
   # the event must start before it ends
   validate if: -> { starts_at.present? && ends_at.present? } do

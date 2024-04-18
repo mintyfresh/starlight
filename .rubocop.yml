@@ -58,6 +58,9 @@ Naming/RescuedExceptionsVariableName:
 Rails/DynamicFindBy:
   Enabled: false
 
+Rails/ReflectionClassName:
+  Enabled: false
+
 Rails/SkipsModelValidations:
   AllowedMethods:
     - increment!

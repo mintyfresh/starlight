@@ -37,8 +37,7 @@
 #  fk_rails_...  (created_by_id => users.id)
 #
 class ConstructedEvent < Event
-  has_one :decklist_config, class_name: 'Event::DecklistConfig', dependent: :destroy, inverse_of: :event
-  accepts_nested_attributes_for :decklist_config, allow_destroy: true, update_only: true, reject_if: proc { |attributes|
+  has_configurable_feature :decklist, reject_if: lambda { |attributes|
     attributes['visibility'].blank? && attributes['format'].blank? && attributes['decklist_required'] == '0'
   }
 
