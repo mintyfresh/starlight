@@ -6,12 +6,11 @@ en:
         format/core: Core
         format/adventure: Adventure
         format/harmony: Harmony
-        format/nightmare: Nightmare
-        format/chaos: Chaos
-        format/custom: Custom
         format_behaviour/reject_invalid: Reject non-conforming decklists
-        format_behaviour/require_approval: Require approval for non-conforming decklists
         format_behaviour/accept_invalid: Accept non-conforming decklists
+        visibility/judges_only: Only visible to judges
+        visibility/other_players: Visible to other registered players
+        visibility/everyone: Visible to everyone
       event/role_config:
         hoist: Display role in members list on sidebar
     errors:

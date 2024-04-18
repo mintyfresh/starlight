@@ -46,7 +46,13 @@ class EventsController < ApplicationController
   def register
     authorize! @event
 
-    form = Event::RegisterForm.new(@event, event_params_for(:register))
+    # display registration modal if decklist can be submitted
+    if params[:event].blank? && @event.decklist_permitted?
+      redirect_to event_path(@event, modal: 'register')
+      return
+    end
+
+    form = Event::RegisterForm.new(@event, params[:event] ? event_params_for(:register) : {})
     form.player = current_user
 
     if form.save
@@ -55,7 +61,7 @@ class EventsController < ApplicationController
       flash.alert = t('.failure', errors: form.errors.full_messages.to_sentence)
     end
 
-    redirect_back fallback_location: event_path(@event)
+    redirect_to event_path(@event)
   end
 
   # POST /events/:slug/check_in

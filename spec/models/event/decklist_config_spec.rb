@@ -6,6 +6,7 @@
 #
 #  id                :bigint           not null, primary key
 #  event_id          :bigint           not null
+#  visibility        :string           not null
 #  decklist_required :boolean          default(FALSE), not null
 #  format            :string
 #  format_behaviour  :string
@@ -31,6 +32,16 @@ RSpec.describe Event::DecklistConfig do
 
   it 'is invalid without an event' do
     config.event = nil
+    expect(config).to be_invalid
+  end
+
+  it 'is invalid without a visibility' do
+    config.visibility = nil
+    expect(config).to be_invalid
+  end
+
+  it 'is invalid with an unknown visibility' do
+    config.visibility = 'unknown'
     expect(config).to be_invalid
   end
 

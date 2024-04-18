@@ -58,6 +58,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_17_215546) do
 
   create_table "event_decklist_configs", force: :cascade do |t|
     t.bigint "event_id", null: false
+    t.string "visibility", null: false
     t.boolean "decklist_required", default: false, null: false
     t.string "format"
     t.string "format_behaviour"

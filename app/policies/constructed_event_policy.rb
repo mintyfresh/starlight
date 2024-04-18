@@ -8,7 +8,7 @@ class ConstructedEventPolicy < EventPolicy
     super(
       params,
       {
-        decklist_config_attributes: %i[_destroy decklist_required format format_behaviour]
+        decklist_config_attributes: %i[_destroy visibility decklist_required format format_behaviour]
       },
       *extra_params
     )

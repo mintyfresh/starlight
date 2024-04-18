@@ -6,6 +6,7 @@
 #
 #  id                :bigint           not null, primary key
 #  event_id          :bigint           not null
+#  visibility        :string           not null
 #  decklist_required :boolean          default(FALSE), not null
 #  format            :string
 #  format_behaviour  :string
@@ -23,6 +24,7 @@
 FactoryBot.define do
   factory :event_decklist_config, class: 'Event::DecklistConfig' do
     event factory: :constructed_event
+    visibility { Event::DecklistConfig::VISIBILITIES.sample }
     decklist_required { true }
     format { Event::DecklistConfig::FORMATS.sample }
     format_behaviour { 'reject_invalid' }

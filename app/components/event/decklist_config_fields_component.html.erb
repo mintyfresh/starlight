@@ -1,0 +1,42 @@
+<%= @form.fields_for(:decklist_config, decklist_config) do |subform| %>
+  <%= subform.group(class: 'mb-3') do %>
+    <%= subform.label(:visibility) %>
+    <%= subform.select(:visibility, visibility_options, { include_blank: true }) %>
+    <%= subform.field_errors(:visibility) %>
+    <%= subform.help_text(:visibility) do %>
+      Changes who can view the decklists of players registered for the event.
+      Once this feature is enabled, decklists can be viewed on the "Players" tab of the event page.
+    <% end %>
+  <% end %>
+  <%= subform.group(class: 'mb-3') do %>
+    <%= subform.switch(:decklist_required) %>
+    <%= subform.help_text(:decklist_required) do %>
+      If enabled, players will not be able to register for the event without submitting a decklist.
+    <% end %>
+  <% end %>
+  <div class="row row-cols-md-2">
+    <div class="col">
+      <%= subform.group(class: 'mb-3') do %>
+        <%= subform.label(:format) %>
+        <%= subform.select(:format, format_options, { include_blank: true }) %>
+        <%= subform.field_errors(:format) %>
+        <%= subform.help_text(:format) do %>
+          The format of the event. If specified, decklists will be validated against this format.
+        <% end %>
+      <% end %>
+    </div>
+    <div class="col">
+      <%= subform.group(class: 'mb-3') do %>
+        <%= subform.label(:format_behaviour) %>
+        <%= subform.select(:format_behaviour, format_behaviour_options, { include_blank: true }) %>
+        <%= subform.field_errors(:format_behaviour) %>
+        <%= subform.help_text(:format_behaviour) do %>
+          If "<%= Event::DecklistConfig.human_format_behaviour_name(:accept_invalid) %>" option is selected,
+          players will still be able to submit decklists that do not match the event format.
+          These will be flagged as non-compliant and will be available for you to review.
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+  <%= subform.base_errors %>
+<% end %>

@@ -38,7 +38,9 @@
 #
 class ConstructedEvent < Event
   has_one :decklist_config, class_name: 'Event::DecklistConfig', dependent: :destroy, inverse_of: :event
-  accepts_nested_attributes_for :decklist_config, allow_destroy: true, update_only: true, reject_if: :all_blank
+  accepts_nested_attributes_for :decklist_config, allow_destroy: true, update_only: true, reject_if: proc { |attributes|
+    attributes['visibility'].blank? && attributes['format'].blank? && attributes['decklist_required'] == '0'
+  }
 
   validates :decklist_config, associated: true
 

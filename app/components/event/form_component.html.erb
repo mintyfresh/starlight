@@ -71,6 +71,15 @@
         <%= render Event::PaymentConfigFieldsComponent.new(form:) %>
       <% end %>
     <% end %>
+    <% case @event %>
+    <% when ConstructedEvent %>
+      <%= extensions.with_item(expanded: @event.decklist_config&.persisted?) do |item| %>
+        <% item.with_header 'Constructed - Decklist configuration' %>
+        <% item.with_body do %>
+          <%= render Event::DecklistConfigFieldsComponent.new(form:) %>
+        <% end %>
+      <% end %>
+    <% end %>
   <% end %>
   <%= form.base_errors %>
   <%= form.group do %>
