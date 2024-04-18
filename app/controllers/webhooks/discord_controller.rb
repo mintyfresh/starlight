@@ -18,8 +18,10 @@ module Webhooks
         render json: Discord::Interaction::Response.pong
       when Discord::Interaction::RequestType::APPLICATION_COMMAND
         render json: Commands.call(request)
-      when Discord::Interaction::RequestType::MESSAGE_COMPONENT, Discord::Interaction::RequestType::MODAL_SUBMIT
+      when Discord::Interaction::RequestType::MESSAGE_COMPONENT
         render json: Components.respond_to_interaction(request)
+      when Discord::Interaction::RequestType::MODAL_SUBMIT
+        render json: Modals.submit(request)
       else
         # TODO: Implement me.
         head :ok

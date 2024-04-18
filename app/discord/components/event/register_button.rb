@@ -12,7 +12,7 @@ module Components
         registration = event.registrations.find_or_initialize_by(player: user)
 
         if event.decklist_permitted?
-          return Components::Registration::RegisterModal.render(registration)
+          return Modals::RegistrationModal.render(registration)
         elsif registration.save(content: :register)
           message = Messages::RegistrationCreateSuccess.render(registration)
         else
