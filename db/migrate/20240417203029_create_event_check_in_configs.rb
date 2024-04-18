@@ -4,6 +4,8 @@ class CreateEventCheckInConfigs < ActiveRecord::Migration[7.1]
   def change
     create_table :event_check_in_configs do |t|
       t.belongs_to :event, null: false, foreign_key: true, index: { unique: true }
+      t.bigint     :discord_channel_id, null: false
+      t.bigint     :discord_message_id
       t.string     :time_zone
       t.date       :starts_at_date, null: false
       t.time       :starts_at_time, null: false

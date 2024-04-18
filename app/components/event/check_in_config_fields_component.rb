@@ -2,6 +2,11 @@
 
 class Event
   class CheckInConfigFieldsComponent < ApplicationComponent
+    SUPPORTED_CHANNEL_TYPES = [
+      Discord::ChannelType::GUILD_TEXT,
+      Discord::ChannelType::GUILD_ANNOUNCEMENT
+    ].freeze
+
     # @param form [Bootstrap::FormBuilder]
     def initialize(form:)
       @form = form

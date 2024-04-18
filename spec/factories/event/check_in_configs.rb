@@ -4,15 +4,17 @@
 #
 # Table name: event_check_in_configs
 #
-#  id             :bigint           not null, primary key
-#  event_id       :bigint           not null
-#  time_zone      :string
-#  starts_at_date :date             not null
-#  starts_at_time :time             not null
-#  ends_at_date   :date
-#  ends_at_time   :time
-#  created_at     :datetime         not null
-#  updated_at     :datetime         not null
+#  id                 :bigint           not null, primary key
+#  event_id           :bigint           not null
+#  discord_channel_id :bigint           not null
+#  discord_message_id :bigint
+#  time_zone          :string
+#  starts_at_date     :date             not null
+#  starts_at_time     :time             not null
+#  ends_at_date       :date
+#  ends_at_time       :time
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
 #
 # Indexes
 #
@@ -25,8 +27,13 @@
 FactoryBot.define do
   factory :event_check_in_config, class: 'Event::CheckInConfig' do
     event
+    discord_channel_id { Faker::Number.unique.number(digits: 18) }
     time_zone { event.time_zone }
     starts_at { event.starts_at - 1.week }
+
+    trait :with_discord_message_id do
+      discord_message_id { Faker::Number.unique.number(digits: 18) }
+    end
 
     trait :with_ends_at do
       ends_at { event.starts_at - 1.day }

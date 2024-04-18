@@ -4,15 +4,17 @@
 #
 # Table name: event_check_in_configs
 #
-#  id             :bigint           not null, primary key
-#  event_id       :bigint           not null
-#  time_zone      :string
-#  starts_at_date :date             not null
-#  starts_at_time :time             not null
-#  ends_at_date   :date
-#  ends_at_time   :time
-#  created_at     :datetime         not null
-#  updated_at     :datetime         not null
+#  id                 :bigint           not null, primary key
+#  event_id           :bigint           not null
+#  discord_channel_id :bigint           not null
+#  discord_message_id :bigint
+#  time_zone          :string
+#  starts_at_date     :date             not null
+#  starts_at_time     :time             not null
+#  ends_at_date       :date
+#  ends_at_time       :time
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
 #
 # Indexes
 #
@@ -37,6 +39,7 @@ class Event
       self.time_zone = event.try(:time_zone)
     end
 
+    validates :discord_channel_id, presence: true
     validates :starts_at, presence: true
 
     # event check-in must start before it ends
@@ -47,6 +50,8 @@ class Event
 
     # event check-in must end before the event ends
     validates :ends_at, before_attribute: :event_ends_at
+
+    publishes_messages_on :create, :update, :destroy
 
     # @!method self.open
     #   @return [Class<Event::CheckInConfig>]

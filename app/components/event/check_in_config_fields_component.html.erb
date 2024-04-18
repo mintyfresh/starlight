@@ -1,5 +1,27 @@
 <%= @form.fields_for(:check_in_config, check_in_config) do |subform| %>
   <%= subform.group(class: 'mb-3') do %>
+    <%= subform.label(:discord_channel_id) %>
+    <%= render DiscordChannelSelectComponent.new(
+      name:          subform.field_name(:discord_channel_id),
+      guild_id:      @form.object.discord_guild_id,
+      channel_types: SUPPORTED_CHANNEL_TYPES,
+      include_blank: true,
+      selected:      subform.object.discord_channel_id,
+      readonly:      subform.object.discord_message_id.present?
+    ) do |select| %>
+      <% select.with_message_on_empty do %>
+        <%= alert(variant: 'warning', class: 'mt-2 mb-0') do %>
+          Could not find any channels suitable for posting announcements.
+          The bot can only post to text or announcement channels.
+        <% end %>
+      <% end %>
+    <% end%>
+    <%= subform.field_errors(:discord_channel_id) %>
+    <%= subform.help_text(:discord_channel_id) do %>
+      Once check-in opens for the event, the bot will automatically post a message in this channel notifying players to check-in.
+    <% end %>
+  <% end %>
+  <%= subform.group(class: 'mb-3') do %>
     <%= subform.label(:starts_at) %>
     <%= subform.datetime_local_field(:starts_at) %>
     <%= subform.field_errors(:starts_at) %>

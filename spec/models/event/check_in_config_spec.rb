@@ -4,15 +4,17 @@
 #
 # Table name: event_check_in_configs
 #
-#  id             :bigint           not null, primary key
-#  event_id       :bigint           not null
-#  time_zone      :string
-#  starts_at_date :date             not null
-#  starts_at_time :time             not null
-#  ends_at_date   :date
-#  ends_at_time   :time
-#  created_at     :datetime         not null
-#  updated_at     :datetime         not null
+#  id                 :bigint           not null, primary key
+#  event_id           :bigint           not null
+#  discord_channel_id :bigint           not null
+#  discord_message_id :bigint
+#  time_zone          :string
+#  starts_at_date     :date             not null
+#  starts_at_time     :time             not null
+#  ends_at_date       :date
+#  ends_at_time       :time
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
 #
 # Indexes
 #
@@ -34,6 +36,16 @@ RSpec.describe Event::CheckInConfig do
   it 'is invalid without an event' do
     config.event = nil
     expect(config).to be_invalid
+  end
+
+  it 'is invalid without a Discord channel ID' do
+    config.discord_channel_id = nil
+    expect(config).to be_invalid
+  end
+
+  it 'is valid without a Discord message ID' do
+    config.discord_message_id = nil
+    expect(config).to be_valid
   end
 
   it 'sets the time zone from the event' do

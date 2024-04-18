@@ -8,7 +8,7 @@ module Discord
       # @return [Discord::Message]
       # @see https://discord.com/developers/docs/resources/channel#create-message
       def create_message(channel_id, message)
-        Discord::Message.new(@client.post("channels/#{channel_id}/messages", message.to_h).body)
+        post Discord::Message, "channels/#{channel_id}/messages", message
       end
     end
   end

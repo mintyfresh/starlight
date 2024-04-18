@@ -1,0 +1,7 @@
+<%= select_tag(
+  @name,
+  options_for_select(channel_options, @selected),
+  **@html_options,
+  class: ['form-select', *@html_options[:class]]
+) %>
+<%= message_on_empty if channel_options.none? %>

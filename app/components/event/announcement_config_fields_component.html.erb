@@ -1,12 +1,21 @@
 <%= @form.fields_for(:announcement_config, announcement_config) do |subform| %>
   <%= subform.group(class: 'mb-3') do %>
     <%= subform.label(:discord_channel_id) %>
-    <%= subform.select(
-      :discord_channel_id, channel_options,
-      { include_blank: true },
-      disabled: channel_options.none?,
-      readonly: subform.object.discord_message_id.present?
-    ) %>
+    <%= render DiscordChannelSelectComponent.new(
+      name:          subform.field_name(:discord_channel_id),
+      guild_id:      @form.object.discord_guild_id,
+      channel_types: SUPPORTED_CHANNEL_TYPES,
+      include_blank: true,
+      selected:      subform.object.discord_channel_id,
+      readonly:      subform.object.discord_message_id.present?
+    ) do |select| %>
+      <% select.with_message_on_empty do %>
+        <%= alert(variant: 'warning', class: 'mt-2 mb-0') do %>
+          Could not find any channels suitable for posting announcements.
+          The bot can only post to text or announcement channels.
+        <% end %>
+      <% end %>
+    <% end%>
     <%= subform.field_errors(:discord_channel_id) %>
   <% end %>
   <%= alert(variant: 'info', class: 'mb-2') do %>
