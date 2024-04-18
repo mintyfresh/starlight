@@ -9,16 +9,21 @@ module Components
         user = request.member.user || request.user
         user = User.upsert_from_discord!(user)
 
-        registration = event.registrations.find_or_initialize_by(player: user)
-
         if event.decklist_permitted?
+          registration = event.registrations.find_or_initialize_by(player: user)
           return Modals::RegistrationModal.render(registration)
-        elsif registration.save(content: :register)
-          message = Messages::RegistrationCreateSuccess.render(registration)
+        end
+
+        registration = event.register(user)
+
+        if registration.errors.none?
+          if registration.previously_new_record?
+            message = Messages::RegistrationCreateSuccess.render(registration)
+          else
+            message = Messages::RegistrationUpdateSuccess.render(registration)
+          end
         else
-          content  = "Failed to register due to the following errors:\n"
-          content += event.errors.full_messages.join("\n")
-          message  = { content:, flags: Discord::MessageFlags::EPHEMERAL }
+          message = Messages::RegistrationUpsertFailure.render(registration)
         end
 
         Discord::Interaction::Response.channel_message(message)

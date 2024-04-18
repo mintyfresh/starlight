@@ -236,11 +236,12 @@ class Event < ApplicationRecord
   # @param created_by [User] the user registering the player
   # @return [Registration]
   def register(player, attributes = {}, created_by: player)
-    registrations.create_with(attributes.merge(created_by:)).create_or_find_by!(player:).tap do |registration|
-      # Optionally, update the registration with additional attributes
-      # (Typically used to set the decklist for the registration)
-      registration.update!(attributes) if attributes.present?
-    end
+    registration = registrations.create_with(attributes.merge(created_by:)).find_or_initialize_by(player:)
+
+    registration.assign_attributes(attributes)
+    registration.save(content: :register)
+
+    registration
   end
 
   # Checks in a player for the event.
