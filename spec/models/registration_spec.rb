@@ -76,8 +76,7 @@ RSpec.describe Registration do
 
     it 'returns the check-in' do
       expect(check_in!).to be_a(CheckIn).and have_attributes(
-        registration: registration,
-        created_by:   creator
+        registration:, created_by: creator
       )
     end
 

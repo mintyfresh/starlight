@@ -2,6 +2,8 @@
 en:
   activerecord:
     attributes:
+      decklist:
+        ponyhead_url: PonyHead URL
       event/decklist_config:
         format/core: Core
         format/adventure: Adventure
@@ -22,9 +24,13 @@ en:
         event:
           attributes:
             base:
-              not_open_for_registration: '%{name} is not open for registration'
               not_open_for_check_in: '%{name} is not open for check-in'
               not_registered: 'You must be registered for %{name} to check-in'
+        registration:
+          attributes:
+            base:
+              decklist_required: 'You must submit a decklist to register for %{name}'
+              not_open_for_registration: '%{name} is not open for registration'
 
   errors:
     messages:

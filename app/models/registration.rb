@@ -34,6 +34,18 @@ class Registration < ApplicationRecord
   has_one :decklist, dependent: :destroy, inverse_of: :registration
   accepts_nested_attributes_for :decklist, allow_destroy: true, update_only: true, reject_if: :all_blank
 
+  validate on: :register do
+    unless event.open_for_registration?
+      errors.add(:base, :not_open_for_registration, name: event.name)
+      throw(:abort)
+    end
+
+    if event.decklist_required? && decklist.blank?
+      errors.add(:base, :decklist_required, event.name)
+      throw(:abort)
+    end
+  end
+
   publishes_messages_on :create, :destroy
 
   # @!method self.checked_in

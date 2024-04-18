@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class EventsController < ApplicationController
-  before_action :set_event, only: %i[show edit update publish register check_in]
+  before_action :set_event, only: %i[show edit update publish check_in]
 
   # GET /events
   def index
@@ -40,28 +40,6 @@ class EventsController < ApplicationController
     end
 
     redirect_back fallback_location: event_path(@event)
-  end
-
-  # POST /events/:slug/register
-  def register
-    authorize! @event
-
-    # display registration modal if decklist can be submitted
-    if params[:event].blank? && @event.decklist_permitted?
-      redirect_to event_path(@event, modal: 'register')
-      return
-    end
-
-    form = Event::RegisterForm.new(@event, params[:event] ? event_params_for(:register) : {})
-    form.player = current_user
-
-    if form.save
-      flash.notice = t('.success', name: @event.name)
-    else
-      flash.alert = t('.failure', errors: form.errors.full_messages.to_sentence)
-    end
-
-    redirect_to event_path(@event)
   end
 
   # POST /events/:slug/check_in

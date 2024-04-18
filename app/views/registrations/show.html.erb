@@ -1,0 +1,24 @@
+<h1>Register for <%= @event.name %></h1>
+<%= form_with(model: @registration, url: event_registration_path(@event), method: :post) do |form| %>
+  <%= form.fields_for(:decklist, @registration.decklist || Decklist.new) do |subform| %>
+    <%= subform.group(class: 'mb-3') do %>
+      <%= subform.label(:deck_name) %>
+      <%= subform.text_field(:deck_name) %>
+      <%= subform.field_errors(:deck_name) %>
+    <% end %>
+    <%= subform.group(class: 'mb-3') do %>
+      <%= subform.label(:ponyhead_url) %>
+      <%= subform.url_field(:ponyhead_url, required: @event.decklist_required?) %>
+      <%= subform.field_errors(:ponyhead_url) %>
+      <% if @event.decklist_required? %>
+        <%= subform.help_text(:ponyhead_url) do %>
+          This event requires you to submit a decklist. Please provide a link to your decklist on PonyHead.
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+  <%= form.base_errors %>
+  <%= form.group do %>
+    <%= form.submit('Register', class: 'btn btn-primary') %>
+  <% end %>
+<% end %>

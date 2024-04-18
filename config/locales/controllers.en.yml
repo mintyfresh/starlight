@@ -15,3 +15,6 @@ en:
     check_in:
       failure: 'Failed to check-in for event: %{errors}'
       success: 'Successfully checked-in for %{name}'
+  registrations:
+    create:
+      success: 'Successfully registered for %{name}'

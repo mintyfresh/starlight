@@ -5,24 +5,20 @@
   <div class="col-auto mt-auto">
     <div class="btn-toolbar gap-2">
       <% if @event.open_for_registration? && !@event.registered?(current_user) && allowed_to?(:register?, @event) %>
-        <%= button_to register_for_event_path(@event), class: 'btn btn-primary', method: :post do %>
-          Register
+        <% if @event.decklist_permitted? %>
+          <%= link_to('Register', event_registration_path(@event), class: 'btn btn-primary') %>
+        <% else %>
+          <%= button_to('Register', event_registration_path(@event), class: 'btn btn-primary', method: :post) %>
         <% end %>
       <% end %>
       <% if @event.open_for_check_in? && @event.registered?(current_user) && !@event.checked_in?(current_user) && allowed_to?(:check_in?, @event) %>
-        <%= button_to check_in_for_event_path(@event), class: 'btn btn-primary', method: :post do %>
-          Check In
-        <% end %>
+        <%= button_to('Check In', check_in_for_event_path(@event), class: 'btn btn-primary', method: :post) %>
       <% end %>
       <% if @event.draft? && allowed_to?(:publish?, @event) %>
-        <%= button_to publish_event_path(@event), class: 'btn btn-primary', method: :post do %>
-          Publish
-        <% end %>
+        <%= button_to('Publish', publish_event_path(@event), class: 'btn btn-primary', method: :post) %>
       <% end %>
       <% if allowed_to?(:edit?, @event) %>
-        <%= link_to edit_event_path(@event), class: 'btn btn-secondary' do %>
-          Edit
-        <% end %>
+        <%= link_to('Edit', edit_event_path(@event), class: 'btn btn-secondary') %>
       <% end %>
     </div>
   </div>

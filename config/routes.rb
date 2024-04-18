@@ -13,9 +13,10 @@ Rails.application.routes.draw do
   resources :events, param: :slug, only: %i[index show edit update] do
     member do
       post :publish
-      post :register, as: :register_for
       post :check_in, as: :check_in_for
     end
+
+    resource :registration, only: %i[show create destroy]
   end
 
   namespace :webhooks do

@@ -1,5 +1,5 @@
 <%= render Bootstrap::Alert::Component.new(variant: @variant, **@html_options) do %>
   <% @errors.each do |error| %>
-    <%= error %><br/>
+    <%= error.full_message %><br/>
   <% end %>
 <% end %>

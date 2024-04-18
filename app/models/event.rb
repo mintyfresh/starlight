@@ -206,7 +206,7 @@ class Event < ApplicationRecord
   #
   # @return [Boolean]
   def open_for_check_in?
-    published? && check_in_config&.open? || false
+    (published? && check_in_config&.open?) || false
   end
 
   # Checks if a player is registered for the event.
@@ -263,6 +263,6 @@ class Event < ApplicationRecord
       return
     end
 
-    registration.check_in!(created_by: player)
+    registration.check_in!(created_by:)
   end
 end
