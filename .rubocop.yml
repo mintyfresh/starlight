@@ -58,6 +58,7 @@ Metrics/BlockLength:
     - 'spec/**/*'
 
 Metrics/MethodLength:
+  Max: 15
   Exclude:
     - 'db/migrate/*.rb'
 

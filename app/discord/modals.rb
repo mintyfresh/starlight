@@ -1,6 +1,11 @@
 # frozen_string_literal: true
 
 module Modals
+  # @!scope class
+  # @!attribute logger
+  #   @return [Logger]
+  mattr_accessor :logger, default: Rails.logger
+
   # @param modal [Modals::Base::Template]
   # @param record [ApplicationRecord, nil]
   # @return [String]
@@ -23,15 +28,27 @@ module Modals
     [modal_class, record]
   end
 
+  # Handles a modal submission request.
+  # Decodes the custom ID and calls the appropriate submission handler.
+  #
   # @param request [Discord::Interaction::Request]
   # @return [Discord::Interaction::Response, nil]
   def self.submit(request)
-    custom_id = request.data.custom_id
-    return if custom_id.nil?
+    if (custom_id = request.data.custom_id).nil?
+      logger.warn { "No custom ID in modal submission: #{request.inspect}" }
+      return
+    end
 
-    modal_class, record = decode_custom_id(custom_id)
-    return if modal_class.nil?
+    if (modal_class, record = decode_custom_id(custom_id)).nil?
+      logger.warn { "Failed to decode custom ID: #{custom_id}" }
+      return
+    end
 
-    modal_class.try(:submit, request, record)
+    if (response = modal_class.try(:submit, request, record)).nil?
+      logger.warn { "No submission handler for modal: #{modal_class}" }
+      return
+    end
+
+    response
   end
 end

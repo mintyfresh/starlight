@@ -85,7 +85,7 @@ class PonyheadURLParser
 
     # @return [Array<(Integer, Integer)>]
     # @see https://github.com/Hithroc/tts-deck-creator/blob/master/static/app.js#L170-L191
-    def decode_slots # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
+    def decode_slots # rubocop:disable Metrics/AbcSize
       id = -1
       slots_count = pop_golomb(1) + 1
 

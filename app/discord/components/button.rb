@@ -2,14 +2,6 @@
 
 module Components
   class Button < Base
-    # @yieldparam request [Discord::Interaction::Request]
-    # @yieldparam record [ApplicationRecord, nil]
-    # @yieldreturn [Discord::Interaction::Response]
-    # @return [void]
-    def self.on_click(&)
-      define_singleton_method(:respond_to_interaction, &)
-    end
-
     # @overload label(text)
     #   @param text [String] the label text
     #   @return [void]

@@ -1,6 +1,11 @@
 # frozen_string_literal: true
 
 module Components
+  # @!scope class
+  # @!attribute logger
+  #   @return [Logger]
+  mattr_accessor :logger, default: Rails.logger
+
   # @param component [Components::Base]
   # @param record [ApplicationRecord, nil]
   # @return [String]
@@ -19,15 +24,27 @@ module Components
     [component_class, record]
   end
 
+  # Handles a component interaction request.
+  # Decodes the custom ID and calls the appropriate interaction handler.
+  #
   # @param request [Discord::Interaction::Request]
   # @return [Discord::Interaction::Response, nil]
-  def self.respond_to_interaction(request)
-    custom_id = request.data.custom_id
-    return if custom_id.nil?
+  def self.interact(request)
+    if (custom_id = request.data.custom_id).nil?
+      logger.warn { "No custom ID in interaction request: #{request.inspect}" }
+      return
+    end
 
-    component_class, record = decode_custom_id(custom_id)
-    return if component_class.nil?
+    if (component_class, record = decode_custom_id(custom_id)).nil?
+      logger.warn { "Failed to decode custom ID: #{custom_id}" }
+      return
+    end
 
-    component_class.try(:respond_to_interaction, request, record)
+    if (response = component_class.try(:interact, request, record)).nil?
+      logger.warn { "No interaction handler for component: #{component_class}" }
+      return
+    end
+
+    response
   end
 end

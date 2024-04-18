@@ -31,7 +31,7 @@ module Webhooks
       when Discord::Interaction::RequestType::APPLICATION_COMMAND
         Commands.call(request)
       when Discord::Interaction::RequestType::MESSAGE_COMPONENT
-        Components.respond_to_interaction(request)
+        Components.interact(request)
       when Discord::Interaction::RequestType::MODAL_SUBMIT
         Modals.submit(request)
       end
