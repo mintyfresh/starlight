@@ -1,0 +1,26 @@
+<% if @registrations.any? %>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Player</th>
+        <th>Decklist</th>
+        <th>Registration date</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @registrations.each do |registration| %>
+        <tr>
+          <td><%= registration.player.name %></td>
+          <td><%= registration.decklist&.deck_name %></td>
+          <td><%= registration.created_at %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <div class="card">
+    <div class="card-body">
+      No players have registered yet.
+    </div>
+  </div>
+<% end %>

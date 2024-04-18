@@ -32,7 +32,7 @@
 </ul>
 <% case params[:tab] %>
 <% when 'players' %>
-  TODO
+  <%= render Event::PlayersTableComponent.new(event: @event) %>
 <% else %>
   <%= render Event::DetailsComponent.new(event: @event) %>
 <% end %>
