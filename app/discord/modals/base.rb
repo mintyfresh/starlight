@@ -28,13 +28,13 @@ module Modals
       attr_reader :record
 
       # @return [Discord::ModalSubmitData]
-      def modal_response_data
+      def modal_submit_data
         request.data
       end
 
       # @return [Hash{String => String}]
       def attributes
-        modal_response_data.components.flat_map(&:components).index_by(&:custom_id).transform_values(&:value)
+        modal_submit_data.components.flat_map(&:components).index_by(&:custom_id).transform_values(&:value)
       end
 
       # @return [Hash]
