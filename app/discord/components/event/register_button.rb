@@ -9,6 +9,11 @@ module Components
         user = request.member.user || request.user
         user = User.upsert_from_discord!(user)
 
+        if event.decklist_permitted?
+          # TODO: Render a modal to collect the decklist
+          raise NotImplementedError, 'Decklist submission is not yet implemented'
+        end
+
         if event.register(user)
           content = 'You have successfully registered for the event!'
         else
