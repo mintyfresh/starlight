@@ -82,6 +82,10 @@ RSpecRails/NegationBeValid:
 Style/AccessorGrouping:
   EnforcedStyle: separated
 
+Style/ConditionalAssignment:
+  EnforcedStyle: assign_inside_condition
+  IncludeTernaryExpressions: false
+
 Style/Documentation:
   Enabled: false
 

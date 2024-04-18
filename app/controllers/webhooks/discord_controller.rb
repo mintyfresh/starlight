@@ -13,22 +13,29 @@ module Webhooks
     def callback
       request = Discord::Interaction::Request.new(params.to_unsafe_hash)
 
-      case request.type
-      when Discord::Interaction::RequestType::PING
-        render json: Discord::Interaction::Response.pong
-      when Discord::Interaction::RequestType::APPLICATION_COMMAND
-        render json: Commands.call(request)
-      when Discord::Interaction::RequestType::MESSAGE_COMPONENT
-        render json: Components.respond_to_interaction(request)
-      when Discord::Interaction::RequestType::MODAL_SUBMIT
-        render json: Modals.submit(request)
+      if (response = handle_interaction(request))
+        render json: response
       else
-        # TODO: Implement me.
-        head :ok
+        head :ok # TODO: Unhandled request types
       end
     end
 
   private
+
+    # @param request [Discord::Interaction::Request]
+    # @return [Discord::Interaction::Response]
+    def handle_interaction(request)
+      case request.type
+      when Discord::Interaction::RequestType::PING
+        Discord::Interaction::Response.pong
+      when Discord::Interaction::RequestType::APPLICATION_COMMAND
+        Commands.call(request)
+      when Discord::Interaction::RequestType::MESSAGE_COMPONENT
+        Components.respond_to_interaction(request)
+      when Discord::Interaction::RequestType::MODAL_SUBMIT
+        Modals.submit(request)
+      end
+    end
 
     # @return [void]
     def validate_request_signature!

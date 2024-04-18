@@ -22,11 +22,11 @@ module Messages
 
     # @return [String]
     def content
-      first_line = if @registration.decklist.present? && @registration.decklist.previous_changes.any?
-                     "Your decklist for #{@registration.event.name} has been updated."
-                   else
-                     "You're already registered for #{@registration.event.name}."
-                   end
+      if @registration.decklist.present? && @registration.decklist.previous_changes.any?
+        first_line = "Your decklist for #{@registration.event.name} has been updated."
+      else
+        first_line = "You're already registered for #{@registration.event.name}."
+      end
 
       <<~CONTENT.strip
         #{first_line}
