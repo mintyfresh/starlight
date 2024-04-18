@@ -40,31 +40,13 @@ class Event
     validates :starts_at, presence: true
 
     # event check-in must start before it ends
-    validate if: -> { starts_at.present? && ends_at.present? } do
-      starts_at < ends_at or errors.add(
-        :starts_at, :before_attribute,
-        attribute: human_attribute_name(:ends_at).downcase,
-        value:     I18n.l(ends_at, format: :datetime_local)
-      )
-    end
+    validates :starts_at, before_attribute: :ends_at
 
     # event check-in must start before the event starts
-    validate if: -> { starts_at.present? && event_starts_at.present? } do
-      starts_at < event_starts_at or errors.add(
-        :starts_at, :before_attribute,
-        attribute: human_attribute_name(:event_starts_at).downcase,
-        value:     I18n.l(event_starts_at, format: :datetime_local)
-      )
-    end
+    validates :starts_at, before_attribute: :event_starts_at
 
     # event check-in must end before the event ends
-    validate if: -> { ends_at.present? && event_ends_at.present? } do
-      ends_at < event_ends_at or errors.add(
-        :ends_at, :before_attribute,
-        attribute: human_attribute_name(:event_ends_at).downcase,
-        value:     I18n.l(event_ends_at, format: :datetime_local)
-      )
-    end
+    validates :ends_at, before_attribute: :event_ends_at
 
     # @!method self.open
     #   @return [Class<Event::CheckInConfig>]

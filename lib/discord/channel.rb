@@ -40,7 +40,7 @@ module Discord
 
     # @param flag [Integer]
     # @return [Boolean]
-    def has_flag?(flag)
+    def flag?(flag)
       (flags || 0) & flag == flag
     end
   end

@@ -78,31 +78,13 @@ class Event < ApplicationRecord
   validates :time_zone, time_zone: true
 
   # the event must start before it ends
-  validate if: -> { starts_at.present? && ends_at.present? } do
-    starts_at < ends_at or errors.add(
-      :starts_at, :before_attribute,
-      attribute: human_attribute_name(:ends_at),
-      value:     I18n.l(ends_at, format: :datetime_local)
-    )
-  end
+  validates :starts_at, before_attribute: :ends_at
 
   # registration must start before it ends
-  validate if: -> { registration_starts_at.present? && registration_ends_at.present? } do
-    registration_starts_at < registration_ends_at or errors.add(
-      :registration_starts_at, :before_attribute,
-      attribute: human_attribute_name(:registration_ends_at),
-      value:     I18n.l(registration_ends_at, format: :datetime_local)
-    )
-  end
+  validates :registration_starts_at, before_attribute: :registration_ends_at
 
   # registration must start before the event starts
-  validate if: -> { starts_at.present? && registration_starts_at.present? } do
-    registration_starts_at < starts_at or errors.add(
-      :registration_starts_at, :before_attribute,
-      attribute: human_attribute_name(:starts_at),
-      value:     I18n.l(starts_at, format: :datetime_local)
-    )
-  end
+  validates :registration_starts_at, before_attribute: :starts_at
 
   with_options if: :published? do
     validates :time_zone, presence: true

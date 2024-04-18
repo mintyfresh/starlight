@@ -45,12 +45,21 @@ Layout/SpaceInLambdaLiteral:
 Lint/AmbiguousBlockAssociation:
   Enabled: false
 
+Metrics/AbcSize:
+  Exclude:
+    - 'db/migrate/*.rb'
+
 Metrics/BlockLength:
   Exclude:
     - 'config/environments/*.rb'
     - 'config/routes.rb'
+    - 'db/migrate/*.rb'
     - 'lib/tasks/**/*.rake'
     - 'spec/**/*'
+
+Metrics/MethodLength:
+  Exclude:
+    - 'db/migrate/*.rb'
 
 Naming/RescuedExceptionsVariableName:
   PreferredName: error
