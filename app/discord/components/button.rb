@@ -4,6 +4,7 @@ module Components
   class Button < Base
     # @yieldparam request [Discord::Interaction::Request]
     # @yieldparam record [ApplicationRecord, nil]
+    # @yieldreturn [Discord::Interaction::Response]
     # @return [void]
     def self.on_click(&)
       define_singleton_method(:respond_to_interaction, &)
@@ -46,6 +47,11 @@ module Components
       Discord::Components::Button.new(**button_attributes, type: Discord::ComponentType::BUTTON)
     end
 
+    # @return [Boolean]
+    def link?
+      style == Discord::Components::ButtonStyle::LINK
+    end
+
   protected
 
     # @return [Hash]
@@ -66,15 +72,12 @@ module Components
 
     # @return [String, nil]
     def custom_id
-      Components.encode_custom_id(self)
+      Components.encode_custom_id(self) unless link?
     end
 
     # @return [String, nil]
     def url
-      return if style != Discord::Components::ButtonStyle::LINK
-
-      # Link buttons must have a URL
-      raise NotImplementedError, "#{self.class.name}#url is not implemented."
+      raise NotImplementedError, "#{self.class.name}#url is not implemented." if link?
     end
 
     # @return [Boolean]

@@ -3,6 +3,8 @@
 module Discord
   module Components
     class SelectOption < DiscordObject
+      schema schema.strict
+
       attribute :label, T::Params::String
       attribute :value, T::Params::String
       attribute? :description, T::Params::String

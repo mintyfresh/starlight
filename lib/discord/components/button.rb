@@ -3,6 +3,8 @@
 module Discord
   module Components
     class Button < DiscordObject
+      schema schema.strict
+
       attribute :type, T::Params::Integer.constrained(eql: ComponentType::BUTTON).default(ComponentType::BUTTON)
       attribute :style, T::Params::Integer
       attribute? :label, T::Params::String

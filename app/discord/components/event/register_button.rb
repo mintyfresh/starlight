@@ -9,21 +9,19 @@ module Components
         user = request.member.user || request.user
         user = User.upsert_from_discord!(user)
 
-        if event.decklist_permitted?
-          # TODO: Render a modal to collect the decklist
-          raise NotImplementedError, 'Decklist submission is not yet implemented'
-        end
+        registration = event.registrations.find_or_initialize_by(player: user)
 
-        if event.register(user)
-          content = 'You have successfully registered for the event!'
+        if event.decklist_permitted?
+          return Components::Registration::RegisterModal.render(registration)
+        elsif registration.save(content: :register)
+          message = Messages::RegistrationCreateSuccess.render(registration)
         else
           content  = "Failed to register due to the following errors:\n"
           content += event.errors.full_messages.join("\n")
+          message  = { content:, flags: Discord::MessageFlags::EPHEMERAL }
         end
 
-        Discord::Interaction::Response.channel_message(
-          content:, flags: Discord::MessageFlags::EPHEMERAL
-        )
+        Discord::Interaction::Response.channel_message(message)
       end
 
       label 'Register'

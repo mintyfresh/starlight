@@ -20,7 +20,7 @@
 #  fk_rails_...  (registration_id => registrations.id)
 #
 class Decklist < ApplicationRecord
-  DECK_NAME_MAX_LENGTH = 5000
+  DECK_NAME_MAX_LENGTH = 4000
 
   PONYHEAD_SCHEMES = %w[http https].freeze
   PONYHEAD_HOST = 'ponyhead.com'

@@ -3,6 +3,8 @@
 module Discord
   module Components
     class SelectMenu < DiscordObject
+      schema schema.strict
+
       attribute :type, T::Params::Integer.enum(
         ComponentType::STRING_SELECT,
         ComponentType::USER_SELECT,

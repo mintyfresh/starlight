@@ -3,6 +3,8 @@
 module Discord
   module Components
     class ActionRow < DiscordObject
+      schema schema.strict
+
       NestableComponent =
         Button |
         SelectMenu |

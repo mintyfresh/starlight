@@ -23,7 +23,7 @@ module Discord
       class ModalResponseData < DiscordObject
         attribute :custom_id, T::Coercible::String
         attribute :title, T::Coercible::String
-        attribute :components, T::Coercible::Array
+        attribute :components, T::Coercible::Array.of(Discord::Component)
       end
 
       # Uses `Instance` type to prevent coercion
