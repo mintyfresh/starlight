@@ -2,6 +2,8 @@
 
 module Components
   class Button < Base
+    # Defines the label text for the button.
+    #
     # @overload label(text)
     #   @param text [String] the label text
     #   @return [void]
@@ -24,6 +26,9 @@ module Components
       end
     end
 
+    # Defines the URL to open when the button is clicked.
+    # Only applicable for buttons with the `LINK` style.
+    #
     # @overload url(url)
     #   @param url [String] the URL to open when the button is clicked
     #   @return [void]
@@ -34,21 +39,55 @@ module Components
       define_method(:url) { url || instance_exec(&block) }
     end
 
-    # @return [Discord::Components::Button]
-    def render
-      Discord::Components::Button.new(**button_attributes, type: Discord::ComponentType::BUTTON)
+    # Defines whether the button is disabled.
+    #
+    # @overload disabled(disabled)
+    #   @param disabled [Boolean] whether the button is disabled
+    #   @return [void]
+    # @overload disabled(&block)
+    #   @yieldreturn [Boolean] whether the button is disabled
+    #   @return [void]
+    def self.disabled(disabled = nil, &block)
+      define_method(:disabled?) do
+        disabled.nil? ? instance_exec(&block) : disabled
+      end
     end
 
-    # @return [Boolean]
-    def link?
-      style == Discord::Components::ButtonStyle::LINK
+    # Defines a linked record for the component interaction.
+    # This record will be passed to the component's interaction handler.
+    # Only a single record can be linked to a component.
+    #
+    # Not applicable for buttons with the `LINK` style.
+    #
+    # @yieldreturn [ApplicationRecord, nil]
+    # @return [void]
+    def self.record_for_interaction(&block)
+      define_method(:custom_id) do
+        Components.encode_custom_id(self, instance_exec(&block))
+      end
+    end
+
+    # @return [Discord::Components::Button]
+    # @override Components::Base#render
+    def render
+      Discord::Components::Button.new(**button_attributes, type: Discord::ComponentType::BUTTON)
     end
 
   protected
 
     # @return [Hash]
     def button_attributes
-      { style:, label:, custom_id:, url:, disabled: disabled? }.compact
+      attributes = { style:, label: }
+      attributes[:disabled] = true if disabled?
+
+      # `url` and `custom_id` fields are mutually exclusive
+      if style == Discord::Components::ButtonStyle::LINK
+        attributes[:url] = url
+      else
+        attributes[:custom_id] = custom_id
+      end
+
+      attributes.compact
     end
 
     # @return [Integer]
@@ -64,12 +103,12 @@ module Components
 
     # @return [String, nil]
     def custom_id
-      Components.encode_custom_id(self) unless link?
+      Components.encode_custom_id(self)
     end
 
     # @return [String, nil]
     def url
-      raise NotImplementedError, "#{self.class.name}#url is not implemented." if link?
+      raise NotImplementedError, "#{self.class.name}#url is not implemented."
     end
 
     # @return [Boolean]

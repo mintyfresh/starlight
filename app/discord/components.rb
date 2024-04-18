@@ -10,7 +10,11 @@ module Components
   # @param record [ApplicationRecord, nil]
   # @return [String]
   def self.encode_custom_id(component, record = nil)
-    [component.class.name.delete_prefix('Components::'), record&.class&.sti_name, record&.id].compact.join('/')
+    [
+      component.class.name.delete_prefix('Components::'),
+      record&.class&.base_class&.name,
+      record&.id
+    ].compact.join('/')
   end
 
   # @param custom_id [String]

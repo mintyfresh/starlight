@@ -82,6 +82,12 @@ module Modals
       components << { **, label:, custom_id:, style:, callback: block }
     end
 
+    # Defines a linked record for the modal submission.
+    # This record will be passed to the modal's submit handler.
+    # Only a single record can be linked to a modal.
+    #
+    # @yieldreturn [ApplicationRecord, nil]
+    # @return [void]
     def self.record_for_submit(&block)
       define_method(:custom_id) do
         Modals.encode_custom_id(self, instance_exec(&block))

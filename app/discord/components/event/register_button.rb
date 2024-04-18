@@ -3,8 +3,6 @@
 module Components
   module Event
     class RegisterButton < Button
-      label 'Register'
-
       # @param event [Event]
       def initialize(event)
         super()
@@ -12,10 +10,8 @@ module Components
         @event = event
       end
 
-      # @return [String]
-      def custom_id
-        Components.encode_custom_id(self, @event)
-      end
+      label 'Register'
+      record_for_interaction { @event }
 
       class InteractionHandler < InteractionHandler
         # @!attribute [r] event

@@ -33,14 +33,14 @@ module Modals
       alias event record
 
       def submit
-        if registration.update(decklist_attributes: attributes)
-          if registration.previously_new_record?
-            message = Messages::RegistrationCreateSuccess.render(registration)
-          else
-            message = Messages::RegistrationUpdateSuccess.render(registration)
-          end
-        else
+        registration.update(decklist_attributes: attributes)
+
+        if registration.errors.any?
           message = Messages::RegistrationUpsertFailure.render(registration)
+        elsif registration.previously_new_record?
+          message = Messages::RegistrationCreateSuccess.render(registration)
+        else
+          message = Messages::RegistrationUpdateSuccess.render(registration)
         end
 
         Discord::Interaction::Response.channel_message(message)
