@@ -37,4 +37,29 @@ RSpec.describe Event::AnnouncementConfig do
     config.discord_channel_id = nil
     expect(config).to be_invalid
   end
+
+  it 'is valid without a Discord message ID' do
+    config.discord_message_id = nil
+    expect(config).to be_valid
+  end
+
+  context 'when persisted' do
+    subject(:config) { create(:event_announcement_config) }
+
+    it 'is valid' do
+      expect(config).to be_valid
+    end
+
+    it 'is valid when the channel ID is changed but the message ID is nil' do
+      config.discord_channel_id += 1
+      config.discord_message_id = nil
+      expect(config).to be_valid
+    end
+
+    it 'is invalid when the channel ID is changed and the message ID is present' do
+      config.discord_channel_id += 1
+      config.discord_message_id = Faker::Number.number(digits: 18)
+      expect(config).to be_invalid
+    end
+  end
 end

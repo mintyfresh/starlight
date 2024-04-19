@@ -26,6 +26,10 @@ en:
             base:
               not_open_for_check_in: '%{name} is not open for check-in'
               not_registered: 'You must be registered for %{name} to check-in'
+        event/announcement_config:
+          attributes:
+            discord_channel_id:
+              cannot_be_changed: cannot be changed after the announcement message is posted
         registration:
           attributes:
             base:
