@@ -27,7 +27,7 @@ class AuthController < ApplicationController
     client = Discord::Client.user(access_token.token)
     self.current_user = User.upsert_from_discord!(client.me)
 
-    redirect_to return_path, notice: t('.success', name: current_user.username)
+    redirect_to return_path, notice: t('.success', name: current_user.name)
   end
 
 private

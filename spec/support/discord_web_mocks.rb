@@ -8,10 +8,11 @@ module DiscordWebMocks
   end
 
   # @param channel_id [Integer]
+  # @param message [Discord::Message, Hash]
   # @see Discord::Client#create_message
-  def stub_discord_create_message(channel_id:, **)
+  def stub_discord_create_message(channel_id, message)
     stub_discord_api_request(:post, "channels/#{channel_id}/messages")
-      .with(body: hash_including(**))
+      .with(body: hash_including(message.to_h))
       .to_return do |request|
         body = JSON.parse(request.body)
 
@@ -26,6 +27,14 @@ module DiscordWebMocks
 
         response
       end
+  end
+
+  # @param channel_id [Integer]
+  # @param message_id [Integer]
+  # @see Discord::Client#delete_message
+  def stub_discord_delete_message(channel_id, message_id)
+    stub_discord_api_request(:delete, "channels/#{channel_id}/messages/#{message_id}")
+      .to_return(status: 200, headers: DEFAULT_HEADERS, body: '')
   end
 
   # @param guild_id [Integer]

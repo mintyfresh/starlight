@@ -62,12 +62,12 @@ module Discord
 
   private
 
-    GET = 'Discord GET'.colorize(:green).bold.freeze
-    POST = 'Discord POST'.colorize(:cyan).bold.freeze
+    GET = 'Discord GET'.colorize(:blue).bold.freeze
+    POST = 'Discord POST'.colorize(:green).bold.freeze
     PATCH = 'Discord PATCH'.colorize(:yellow).bold.freeze
     PUT = 'Discord PUT'.colorize(:magenta).bold.freeze
     DELETE = 'Discord DELETE'.colorize(:red).bold.freeze
-    private_constant :GET, :POST, :PATCH, :DELETE
+    private_constant :GET, :POST, :PATCH, :PUT, :DELETE
 
     # @param klass [Class<Discord::Resource>]
     # @param resource [String]
