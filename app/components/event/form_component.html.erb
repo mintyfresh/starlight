@@ -16,7 +16,13 @@
   <% end %>
   <%= form.group(class: 'mb-3') do %>
     <%= form.label(:time_zone) %>
-    <%= form.select(:time_zone, options_from_collection_for_select(TZInfo::Timezone.all, :identifier, :friendly_identifier, @event.time_zone), required: @event.published?) %>
+    <%= form.select(
+      :time_zone,
+      options_from_collection_for_select(TZInfo::Timezone.all, :identifier, :friendly_identifier, @event.time_zone),
+      { include_blank: true },
+      data:     { 'default-value' => 'current-time-zone' },
+      required: @event.published?
+    ) %>
     <%= form.field_errors(:time_zone) %>
   <% end %>
   <div class="row row-cols-md-2">
@@ -34,11 +40,17 @@
       <%= form.label(:registration_starts_at) %>
       <%= form.datetime_local_field(:registration_starts_at) %>
       <%= form.field_errors(:registration_starts_at) %>
+      <%= form.help_text(:registration_starts_at) do %>
+        If not specified, registration will open as soon as the event is published.
+      <% end %>
     <% end %>
     <%= form.group(class: 'col mb-3') do %>
       <%= form.label(:registration_ends_at) %>
       <%= form.datetime_local_field(:registration_ends_at) %>
       <%= form.field_errors(:registration_ends_at) %>
+      <%= form.help_text(:registration_ends_at) do %>
+        If not specified, registration will close as soon as the event starts.
+      <% end %>
     <% end %>
   </div>
   <%= form.group(class: 'mb-4') do %>
