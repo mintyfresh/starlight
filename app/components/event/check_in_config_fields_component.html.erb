@@ -26,13 +26,20 @@
     <%= subform.datetime_local_field(:starts_at) %>
     <%= subform.field_errors(:starts_at) %>
   <% end %>
-  <%= subform.group(class: 'mb-2') do %>
+  <%= subform.group(class: 'mb-3') do %>
     <%= subform.label(:ends_at) %>
     <%= subform.datetime_local_field(:ends_at) %>
     <%= subform.field_errors(:ends_at) %>
     <%= subform.help_text(:ends_at) do %>
       If not specified, check-in will close as soon as the event starts.
     <% end %>
+  <% end %>
+  <% if check_in_config.persisted? %>
+    <div class="card border-danger mb-3">
+      <div class="card-body">
+        <%= subform.check(:_destroy, {}, class: 'text-danger') %>
+      </div>
+    </div>
   <% end %>
   <%= subform.base_errors %>
 <% end %>

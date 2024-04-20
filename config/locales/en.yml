@@ -4,6 +4,16 @@ en:
     attributes:
       decklist:
         ponyhead_url: PonyHead URL
+      event/announcement_config:
+        _destroy: Remove configuration and delete announcement
+      event/check_in_config:
+        _destroy: Remove configuration and delete check-in message
+      event/decklist_config:
+        _destroy: Remove configuration
+      event/payment_config:
+        _destroy: Remove configuration
+      event/role_config:
+        _destroy: Remove configuration and delete role
       event/decklist_config:
         format/core: Core
         format/adventure: Adventure

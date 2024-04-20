@@ -5,11 +5,18 @@
       <%= subform.number_field(:price, min: 0) %>
       <%= subform.field_errors(:price) %>
     <% end %>
-    <%= subform.group(class: 'col mb-2') do %>
+    <%= subform.group(class: 'col mb-3') do %>
       <%= subform.label(:currency) %>
       <%= subform.select(:currency, currency_options, { include_blank: true }) %>
       <%= subform.field_errors(:currency) %>
     <% end %>
   </div>
+  <% if payment_config.persisted? %>
+    <div class="card border-danger mb-3">
+      <div class="card-body">
+        <%= subform.check(:_destroy, {}, class: 'text-danger') %>
+      </div>
+    </div>
+  <% end %>
   <%= subform.base_errors %>
 <% end %>

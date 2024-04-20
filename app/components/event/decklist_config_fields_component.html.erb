@@ -38,5 +38,12 @@
       <% end %>
     </div>
   </div>
+  <% if decklist_config.persisted? %>
+    <div class="card border-danger mb-3">
+      <div class="card-body">
+        <%= subform.check(:_destroy, {}, class: 'text-danger') %>
+      </div>
+    </div>
+  <% end %>
   <%= subform.base_errors %>
 <% end %>
