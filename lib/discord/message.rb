@@ -9,6 +9,12 @@ module Discord
     attribute? :timestamp, T::Params::DateTime
     attribute? :edited_timestamp, T::Params::DateTime.optional
     attribute? :tts, T::Params::Bool
+    attribute? :allowed_mentions do
+      attribute? :parse, T::Params::Array.of(T::Params::String)
+      attribute? :roles, T::Params::Array.of(T::Params::Integer)
+      attribute? :users, T::Params::Array.of(T::Params::Integer)
+      attribute? :replied_user, T::Params::Bool
+    end
     attribute? :mention_everyone, T::Params::Bool
     attribute? :mentions, T::Params::Array.of(User)
     attribute? :mention_roles, T::Params::Array
@@ -26,7 +32,12 @@ module Discord
     end
     attribute? :application, T::Params::Hash
     attribute? :application_id, T::Params::Integer
-    attribute? :message_reference, T::Params::Hash
+    attribute? :message_reference do
+      attribute? :message_id, T::Params::Integer.optional
+      attribute? :channel_id, T::Params::Integer.optional
+      attribute? :guild_id, T::Params::Integer.optional
+      attribute? :fail_if_not_exists, T::Params::Bool.optional
+    end
     attribute? :flags, T::Params::Integer
     attribute? :referenced_message, T::Params::Hash.optional
     attribute? :interaction, T::Params::Hash

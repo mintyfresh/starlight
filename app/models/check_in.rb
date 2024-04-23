@@ -23,4 +23,6 @@
 class CheckIn < ApplicationRecord
   belongs_to :registration, inverse_of: :check_in
   belongs_to :created_by, class_name: 'User', inverse_of: false
+
+  has_one :event, through: :registration
 end

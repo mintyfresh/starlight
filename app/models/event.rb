@@ -219,7 +219,7 @@ class Event < ApplicationRecord
   #
   # @param player [User] the player to check in
   # @param created_by [User] the user checking in the player
-  # @return [Boolean]
+  # @return [CheckIn, nil]
   def check_in(player, created_by: player)
     # event must be open for check-in
     unless open_for_check_in?
