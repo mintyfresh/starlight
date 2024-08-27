@@ -60,6 +60,12 @@ class Event
         .where((Event.arel_table[:ends_at] + arel_table[:cleanup_delay]).lt(bind_param('now', Time.current)))
     }
 
+    # @param event [Event]
+    # @return [Boolean]
+    def self.active_for_event?(event)
+      event.role_config&.discord_role_id.present?
+    end
+
     # @param value [Integer, String, nil]
     # @return [void]
     def colour=(value)

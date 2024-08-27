@@ -4,7 +4,7 @@ class Event
   class AddPlayerToRoleSubscriber < ApplicationSubscriber
     subscribes_to Registration::CreateMessage do |message|
       # check that the event has a role to add the player to
-      message.registration.event.role_config&.discord_role_id.present?
+      Event::RoleConfig.active_for_event?(message.registration.event)
     end
 
     def perform

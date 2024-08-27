@@ -4,7 +4,7 @@ class Event
   class RemovePlayerFromRoleSubscriber < ApplicationSubscriber
     subscribes_to Registration::DestroyMessage do |message|
       # check that the event has a role to remove the player from
-      message.registration.event.role_config&.discord_role_id.present?
+      Event::RoleConfig.active_for_event?(message.registration.event)
     end
 
     def perform
